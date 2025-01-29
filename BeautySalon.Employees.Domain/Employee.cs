@@ -9,27 +9,25 @@ namespace BeautySalon.Employees.Domain
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+
+        public int StatusId { get; set; }
         public EmployeeStatus Status { get; set; }
         public ICollection<Schedule> Schedules { get; set; }
         public ICollection<Skill> Skills { get; set; }
     }
 
-    public enum EmployeeStatus
+    public class EmployeeStatus
     {
-        Active,
-        Inactive,
-        OnVacation 
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public ICollection<Employee> Employees { get; set; }
     }
 
-    public enum CustomDateOfWeek
+    public class CustomDateOfWeek
     {
-        Monday = 0,    
-        Tuesday = 1,   
-        Wednesday = 2, 
-        Thursday = 3,  
-        Friday = 4,    
-        Saturday = 5,  
-        Sunday = 6    
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public ICollection<Schedule> Schedules { get; set; }
     }
 
     public class Schedule
@@ -37,6 +35,7 @@ namespace BeautySalon.Employees.Domain
         public Guid Id { get; set; }
         public Guid EmployeeId { get; set; }
         public Employee Employee { get; set; }
+        public int DateOfWeekId { get; set; }
         public CustomDateOfWeek DateOfWeek { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }

@@ -1,0 +1,19 @@
+apiVersion: app/v1
+   kind: Deployment
+   metadata:
+     name: mymicroservice
+   spec:
+     replicas: 3
+     selector:
+       matchLabels:
+         app: mymicroservice
+     template:
+       metadata:
+         labels:
+           app: mymicroservice
+       spec:
+         containers:
+         - name: mymicroservice
+           image: mymicroservice:latest
+           ports:
+           - containerPort: 80

@@ -11,6 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeautySalon.Employees.Persi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeautySalon.Employees.Application", "BeautySalon.Employees.Application\BeautySalon.Employees.Application.csproj", "{F399F6F6-BD84-4FB2-9A32-44E780E4B491}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "K8S", "K8S", "{402D7B47-08C1-48D9-AA80-167113F12004}"
+	ProjectSection(SolutionItems) = preProject
+		employee-depl.yaml = employee-depl.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

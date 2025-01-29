@@ -1,5 +1,9 @@
+using AutoMapper;
+using BeautySalon.Employees.Application.DTO;
+using BeautySalon.Employees.Application.Features.CreateEmployee;
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Persistence;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +21,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest) =>
-{ 
-    return Results.Ok(_employeeRepository.GetAllAsync());
+app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest, ISender _sender, IMapper _mapper) =>
+{
+    var command = _mapper.Map<CreateEmployeeCommand>(createEmployeeRequest);
+
+    var result = _sender.Send(command);
+
+    return Results.Created();
 });
 
 app.UseHttpsRedirection();
