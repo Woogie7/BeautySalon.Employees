@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BeautySalon.Employees.Application\BeautySalon.Employees.Application.csproj" />
     <ProjectReference Include="..\BeautySalon.Employees.Persistence\BeautySalon.Employees.Persistence.csproj" />
   </ItemGroup>
 

@@ -17,7 +17,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/employees", async (IEmployeeRepository _employeeRepository) =>
+app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest) =>
 { 
     return Results.Ok(_employeeRepository.GetAllAsync());
 });
