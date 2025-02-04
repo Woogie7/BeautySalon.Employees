@@ -17,3 +17,15 @@ spec:
           image: woogie42/beautysalon.employees.api:latest
           ports:
             - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: productsbackend
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    targetPort: 80
+  selector:
+    app: beautysalon-employees-api
