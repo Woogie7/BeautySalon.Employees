@@ -25,6 +25,8 @@ namespace BeautySalon.Employees.Application.Features.CreateEmployee
             var employee = _mapper.Map<Employee>(request);
             await _employeeRepository.CreateAsync(employee);
             _employeeRepository.SavaChangesAsync();
+
+
         }
     }
 }
