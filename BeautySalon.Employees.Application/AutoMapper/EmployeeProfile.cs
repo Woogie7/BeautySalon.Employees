@@ -18,7 +18,7 @@ namespace BeautySalon.Employees.Application.AutoMapper
 
             CreateMap<CreateEmployeeCommand, Employee>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
-            //.ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => MapStatusToId(src.status)))asdasdasdas
+            //.ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => MapStatusToId(src.status)))asdasdasdasasdas
             .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.Skill.Select(s => new Skill { Name = s }).ToList()))
             .ForMember(dest => dest.Schedules, opt => opt.Ignore())
             .ForMember(dest => dest.Status, opt => opt.Ignore());
