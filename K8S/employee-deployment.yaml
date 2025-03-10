@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: employee-depl
+  name: employee-deployment
 spec:
   replicas: 1
   selector:
@@ -14,18 +14,6 @@ spec:
     spec:
       containers:
         - name: beautysalon-employees-api
-          image: woogie42/beautysalon.employees.api:latest
+          image: woogie42/beautysalon.employees.api:v2
           ports:
-            - containerPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: productsbackend
-spec:
-  type: LoadBalancer
-  ports:
-  - port: 8080
-    targetPort: 80
-  selector:
-    app: beautysalon-employees-api
+            - containerPort: 8080
