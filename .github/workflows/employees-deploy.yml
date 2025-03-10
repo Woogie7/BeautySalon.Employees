@@ -2,7 +2,8 @@ name: deployment Employees Service
 
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
 
 
 jobs:
