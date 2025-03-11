@@ -26,4 +26,4 @@ jobs:
       - name: Update Kubernetes
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
-        run: kubectl set image deployment/employees-deployment beautysalon-employees-api=${{ secrets.DOCKER_USERNAME }}/beautysalon.employees.api:${{ github.sha }} -n default
+        run: kubectl get all
