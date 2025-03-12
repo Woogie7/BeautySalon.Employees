@@ -23,6 +23,16 @@ jobs:
       - name: Push Docker Image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/beautysalon.employees.api:${{ github.sha }}
 
+      - name: Set up kubectl
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+
+      - name: Update Kubernetes deployment
+        run: |
+          kubectl set image deployment/employee-deployment beautysalon-employees-api=beautysalon.employees.api:${{ github.sha }}
+
       - name: Update Kubernetes
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
