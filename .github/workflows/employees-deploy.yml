@@ -34,11 +34,16 @@ jobs:
           chmod 600 $HOME/.kube/config
 
 
-      - name: Update Kubernetes deployment
+      - name: Update Kubernetes Manifests
         run: |
-          kubectl set image deployment/employee-deployment beautysalon-employees-api=beautysalon.employees.api:${{ github.sha }}
+          git clone https://github.com/Woogie7/BeautySalon.Deployments.git
+          cd BeautySalon.Deployments
 
-      - name: Update Kubernetes
-        env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
-        run: kubectl get all
+          sed -i "s|image:.*|image: ${{ secrets.DOCKER_USERNAME }}/beautysalon.employees.api:${{ github.sha }}|" k8s/employee-deployment.yaml
+
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+          git add k8s/employee-deployment.yaml
+          git commit -m "Update employee-service-api image to ${{ github.sha }}"
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/Woogie7/BeautySalon.Deployments.git main
