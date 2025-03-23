@@ -41,8 +41,8 @@ jobs:
 
           sed -i "s|image:.*|image: ${{ secrets.DOCKER_USERNAME }}/beautysalon.employees.api:${{ github.sha }}|" k8s/employee-deployment.yaml
 
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          git config --global user.name "Woogie7"
+          git config --global user.email "ktsyngeev@bk.ru"
 
           git add k8s/employee-deployment.yaml
           git commit -m "Update employee-service-api image to ${{ github.sha }}"
