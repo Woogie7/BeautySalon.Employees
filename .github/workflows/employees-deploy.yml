@@ -42,11 +42,24 @@ jobs:
           git commit -m "Update image tag to ${{ github.sha }}"
           git push
           
-      - name: Deploy via Argo CD
+      - name: Install Argo CD CLI
         run: |
-          # Применяем Application манифест
-          kubectl apply -f deployments/argocd/root.yaml
+          curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+          chmod +x argocd
+          sudo mv argocd /usr/local/bin/
+
+      - name: Sync Argo CD application
+        run: |
+          # Подождем несколько секунд для применения изменений в Git
+          sleep 10
           
-          # Для первого запуска можно синхронизировать вручную
+          # Получаем пароль Argo CD
+          ARGOCD_PASS=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+          
+          # Логинимся в Argo CD
+          argocd login argocd-server.argocd.svc.cluster.local --username admin --password $ARGOCD_PASS --insecure
+          
+          # Синхронизируем приложение
           argocd app sync employee-service
+          argocd app wait employee-service --health
   
