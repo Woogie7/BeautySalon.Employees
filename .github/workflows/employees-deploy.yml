@@ -16,9 +16,9 @@ jobs:
       - name: Checkout Deployment Repo (BeautySalon.Deployments)
         uses: actions/checkout@v4
         with:
-          repository: your-org/BeautySalon.Deployments  # ЗАМЕНИ НА СВОЙ ОРГАНИЗАЦИОННЫЙ АККАУНТ
-          token: ${{ secrets.DEPLOY_REPO_PAT }}  # Personal Access Token для доступа к деплою
-          path: deployments  # Клонируем в папку `deployments`
+          repository: your-org/BeautySalon.Deployments  
+          token: ${{ secrets.DEPLOY_REPO_PAT }}  
+          path: deployments  
 
       - name: Login to DockerHub
         run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
@@ -31,11 +31,11 @@ jobs:
 
       - name: Update image tag in values.yaml
         run: |
-          yq eval -i '.image.tag = "${{ github.sha }}"' deployments/k8s/values.yaml  # Путь до файла
+          yq eval -i '.image.tag = "${{ github.sha }}"' deployments/k8s/values.yaml  
 
       - name: Commit and Push Changes to Deployment Repo
         run: |
-          cd deployments  # Переходим в папку с репозиторием деплоя
+          cd deployments  
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git add k8s/values.yaml
