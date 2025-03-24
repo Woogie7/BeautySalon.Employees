@@ -45,7 +45,7 @@ jobs:
       - name: Deploy via Argo CD
         run: |
           # Применяем Application манифест
-          kubectl apply -f argocd-app.yaml
+          kubectl apply -f deployments/argocd/root.yaml
           
           # Для первого запуска можно синхронизировать вручную
           argocd app sync employee-service
