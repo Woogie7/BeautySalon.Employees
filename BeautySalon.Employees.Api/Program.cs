@@ -34,7 +34,7 @@ app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest, [F
 });
 
 app.MapGet("/employees", () => {
-    return Results.Ok("Привет мир");
+    return Results.Ok("Привеут мир");
 });
 
 app.UseHttpsRedirection();
