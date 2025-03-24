@@ -45,7 +45,7 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
           chmod 600 ~/.kube/config
           kubectl get nodes  # Проверка подключения
           helm upgrade --install employee-service .k8s -n default -f .k8s/values.yaml
