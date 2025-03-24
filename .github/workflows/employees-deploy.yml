@@ -18,12 +18,7 @@ jobs:
         with:
           repository: Woogie7/BeautySalon.Deployments
           token: ${{ secrets.DEPLOY_REPO_PAT }}  
-          path: deployments  
-
-      - name: Configure kubeconfig
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+          path: deployments 
 
       - name: Login to DockerHub
         run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
@@ -49,8 +44,9 @@ jobs:
           
       - name: Deploy to Kubernetes
         run: |
-          helm upgrade --install employee-service \
-          .k8s \
-          -n default \
-          -f .k8s/values.yaml
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
+          kubectl get nodes  # Проверка подключения
+          helm upgrade --install employee-service .k8s -n default -f .k8s/values.yaml
     
