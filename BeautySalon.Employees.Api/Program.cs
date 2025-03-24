@@ -33,9 +33,13 @@ app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest, [F
     return Results.Created();
 });
 
-app.MapGet("/employees", () => {
-    return Results.Ok("Эй вы");
+app.MapGet("/employees", () =>
+{
+    var response = Results.Text("Привет мир", "text/plain; charset=utf-8");
+    return response;
 });
+
+
 
 app.UseHttpsRedirection();
 

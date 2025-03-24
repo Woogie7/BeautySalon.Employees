@@ -4,6 +4,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
 ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
 EXPOSE 8080
 EXPOSE 8081
 
