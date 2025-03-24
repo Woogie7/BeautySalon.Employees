@@ -34,16 +34,14 @@ jobs:
           chmod 600 $HOME/.kube/config
 
 
-      - name: Update Kubernetes Manifests
+      - name: Update image tag in values.yaml
         run: |
-          git clone https://github.com/Woogie7/BeautySalon.Deployments.git
-          cd BeautySalon.Deployments
+          yq eval -i '.image.tag = "${{ github.sha }}"' k8s/values.yaml
 
-          sed -i "s|image:.*|image: ${{ secrets.DOCKER_USERNAME }}/beautysalon.employees.api:${{ github.sha }}|" k8s/employee-deployment.yaml
-
-          git config --global user.name "Woogie7"
-          git config --global user.email "ktsyngeev@bk.ru"
-
-          git add k8s/employee-deployment.yaml
-          git commit -m "Update employee-service-api image to ${{ github.sha }}"
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/Woogie7/BeautySalon.Deployments.git main
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add path/to/values.yaml
+          git commit -m "Update image tag to ${{ github.sha }}"
+          git push
