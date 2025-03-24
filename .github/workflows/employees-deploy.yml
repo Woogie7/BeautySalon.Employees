@@ -41,3 +41,11 @@ jobs:
           git add k8s/values.yaml
           git commit -m "Update image tag to ${{ github.sha }}"
           git push
+          
+      - name: Deploy to Kubernetes
+        run: |
+          helm upgrade --install employee-service \
+          .k8s \
+          -n default \
+          -f .k8s/values.yaml
+    
