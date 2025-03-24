@@ -16,7 +16,7 @@ jobs:
       - name: Checkout Deployment Repo (BeautySalon.Deployments)
         uses: actions/checkout@v4
         with:
-          repository: your-org/BeautySalon.Deployments  
+          repository: Woogie7/BeautySalon.Deployments
           token: ${{ secrets.DEPLOY_REPO_PAT }}  
           path: deployments  
 
