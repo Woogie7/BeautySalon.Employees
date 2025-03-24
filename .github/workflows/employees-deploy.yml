@@ -42,11 +42,11 @@ jobs:
           git commit -m "Update image tag to ${{ github.sha }}"
           git push
           
-      - name: Deploy to Kubernetes
+      - name: Deploy via Argo CD
         run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > ~/.kube/config
-          chmod 600 ~/.kube/config
-          kubectl get nodes  # Проверка подключения
-          helm upgrade --install employee-service .k8s -n default -f .k8s/values.yaml
+          # Применяем Application манифест
+          kubectl apply -f argocd-app.yaml
+          
+          # Для первого запуска можно синхронизировать вручную
+          argocd app sync employee-service
   
