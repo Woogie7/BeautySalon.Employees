@@ -35,7 +35,7 @@ app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest, [F
 
 app.MapGet("/employees", () =>
 {
-    return Results.Json(new { message = "Привет мир" });
+    return Results.Json(new { message = "Привsadasет мир" });
 });
 
 
