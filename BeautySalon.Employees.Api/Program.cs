@@ -35,7 +35,7 @@ app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest, [F
 
 app.MapGet("/employees", () =>
 {
-    return Results.Ok(new { message = "lAST ïîÏÛÒÊÀ?" });
+    return Results.Content("lAST ïîÏÛÒÊÀ?", "application/json; charset=utf-8");
 });
 
 
