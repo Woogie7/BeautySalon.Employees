@@ -6,6 +6,7 @@ using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,9 +36,10 @@ app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest, [F
 
 app.MapGet("/employees", () =>
 {
-    return Results.Content("lAST поѕџ“ ј?", "application/json; charset=utf-8");
+    string responseText = "lAST поѕџ“ ј?";
+    // »спользуем Results.Text дл€ text/plain и €вно указываем UTF-8
+    return Results.Text(responseText, "text/plain", Encoding.UTF8);
 });
-
 
 
 app.UseHttpsRedirection();
