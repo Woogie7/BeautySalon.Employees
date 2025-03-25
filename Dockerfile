@@ -2,9 +2,11 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/*
+RUN locale-gen en_US.UTF-8
 WORKDIR /app
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
 EXPOSE 8080
 EXPOSE 8081
 
