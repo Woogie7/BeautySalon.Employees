@@ -41,6 +41,11 @@ app.MapGet("/employees", () =>
     return Results.Text(responseText, "text/plain", Encoding.UTF8);
 });
 
+app.MapGet("a", () =>
+{
+    return Results.Ok("Привет");
+});
+
 
 app.UseHttpsRedirection();
 
