@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y locales \
 
 ENV LANG=ru_RU.UTF-8
 ENV LC_ALL=ru_RU.UTF-8
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
 USER app
 WORKDIR /app
