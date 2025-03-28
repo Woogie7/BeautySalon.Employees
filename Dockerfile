@@ -1,6 +1,14 @@
 # Базовый образ для финального контейнера
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 
+# Устанавливаем локали вручную
+RUN apt-get update && apt-get install -y locales \
+    && echo "ru_RU.UTF-8 UTF-8" > /etc/locale.gen \
+    && locale-gen
+
+ENV LANG=ru_RU.UTF-8
+ENV LC_ALL=ru_RU.UTF-8
+
 USER app
 WORKDIR /app
 EXPOSE 8080
@@ -27,17 +35,8 @@ FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./BeautySalon.Employees.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Финальный образ для контейнера с приложением
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm AS final
-
-# Устанавливаем локали (в bookworm есть locales)
-RUN apt-get update && apt-get install -y locales \
-    && echo "ru_RU.UTF-8 UTF-8" > /etc/locale.gen \
-    && locale-gen
-
-ENV LANG=ru_RU.UTF-8
-ENV LC_ALL=ru_RU.UTF-8
-
+# Финальный образ
+FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
