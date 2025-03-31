@@ -6,28 +6,13 @@ using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Text;
-
-Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-Console.OutputEncoding = Encoding.UTF8;
-Console.InputEncoding = Encoding.UTF8;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
-{
-    options.SerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-});
 
-// Принудительное задание кодировки для текстовых ответов
-builder.Services.Configure<MvcOptions>(options =>
-{
-    options.OutputFormatters.RemoveType<Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter>();
-    options.OutputFormatters.Add(new Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter
-    {
-        SupportedEncodings = { Encoding.UTF8 }
-    });
-});
+Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -53,7 +38,11 @@ app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest, [F
     return Results.Created();
 });
 
-app.MapGet("/employees", () => "Привет, мир! ");
+app.MapGet("/employees", () =>
+{
+    return Results.Text("Привет, мир!", "text/plain; charset=utf-8");
+});
+
 
 app.MapGet("a", () =>
 {
