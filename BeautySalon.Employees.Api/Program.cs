@@ -29,6 +29,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.Use(async (context, next) =>
+{
+    context.Response.Headers["Content-Type"] = "text/plain; charset=utf-8";
+    await next();
+});
+
 app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest, [FromServices]ISender _sender, IMapper _mapper) =>
 {
     var command = _mapper.Map<CreateEmployeeCommand>(createEmployeeRequest);
@@ -40,13 +46,13 @@ app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest, [F
 
 app.MapGet("/employees", () =>
 {
-    return Results.Text("Привет, мир!", "text/plain; charset=utf-8");
+    return Results.Text("РџСЂРёРІРµС‚ РјРёСЂ, !", "text/plain; charset=utf-8");
 });
 
 
 app.MapGet("a", () =>
 {
-    return Results.Ok("Привет");
+    return Results.Ok("РџСЂРёРІРµС‚");
 });
 
 
