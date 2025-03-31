@@ -8,7 +8,26 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
+Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+Console.OutputEncoding = Encoding.UTF8;
+Console.InputEncoding = Encoding.UTF8;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+{
+    options.SerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+});
+
+// Принудительное задание кодировки для текстовых ответов
+builder.Services.Configure<MvcOptions>(options =>
+{
+    options.OutputFormatters.RemoveType<Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter>();
+    options.OutputFormatters.Add(new Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter
+    {
+        SupportedEncodings = { Encoding.UTF8 }
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -34,12 +53,7 @@ app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest, [F
     return Results.Created();
 });
 
-app.MapGet("/employees", () =>
-{
-    string responseText = "lAST поПЫТКА?";
-    // Используем Results.Text для text/plain и явно указываем UTF-8
-    return Results.Text(responseText, "text/plain", Encoding.UTF8);
-});
+app.MapGet("/employees", () => "Привет, мир! ");
 
 app.MapGet("a", () =>
 {
