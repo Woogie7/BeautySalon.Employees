@@ -46,7 +46,7 @@ app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest, [F
 
 app.MapGet("/employees", () =>
 {
-    return Results.Text("Привет мир, !", "text/plain; charset=utf-8");
+    return Results.Text("Всем привет!", "text/plain; charset=utf-8");
 });
 
 
