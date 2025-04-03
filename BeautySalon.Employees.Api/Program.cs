@@ -1,4 +1,5 @@
 using AutoMapper;
+using BeautySalon.Employees.Api;
 using BeautySalon.Employees.Application;
 using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Application.Features.CreateEmployee;
@@ -35,20 +36,31 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.MapPost("/api/tasks", async (int employeeId, int projectId, string startTime, int duration, string description) =>
+
+app.MapPost("/api/tasks", async (TaskRequest taskRequest) =>
 {
-    // Создаем объект задачи (можно использовать анонимный объект)
+    if (taskRequest == null)
+    {
+        return Results.BadRequest("Request body is required.");
+    }
+
+    if (taskRequest.Duration <= 0)
+    {
+        return Results.BadRequest("Duration must be greater than zero.");
+    }
+
+    // Создаем объект задачи для ответа
     var newTask = new
     {
-        EmployeeId = employeeId,
-        ProjectId = projectId,
-        StartTime = startTime,
-        Duration = duration,
-        Description = description
+        TaskId = taskRequest.TaskId,
+        ProjectId = taskRequest.ProjectId,
+        StartTime = taskRequest.StartTime,
+        Duration = taskRequest.Duration,
+        Status = taskRequest.Status
     };
 
-    // URI созданного ресурса (например, путь к задаче)
-    var resourceUri = $"/api/tasks/{projectId}";
+    // URI созданного ресурса
+    var resourceUri = $"/api/tasks/{taskRequest.ProjectId}";
 
     // Возвращаем HTTP 201 Created с URI и данными задачи
     return Results.Created(resourceUri, newTask);
