@@ -35,13 +35,23 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest, [FromServices]ISender _sender, IMapper _mapper) =>
+app.MapPost("/api/tasks", async (int employeeId, int projectId, DateTime startTime, int duration, description) =>
 {
-    var command = _mapper.Map<CreateEmployeeCommand>(createEmployeeRequest);
+    return Results.Created(employeeId, projectId, startTime, duration, description);
+});
 
-    var result = _sender.Send(command);
+app.MapGet("/api/tasks", async (FromQuery employeeId) =>
+{
+    return Results.Ok("{"taskId": "789",
+"projectId": "456",
+"startTime": "2024-12-07T09:00:00",
+"duration": 120,
+"status": "In Progress"}");
+});
 
-    return Results.Created();
+app.MapDelete("/api/tasks", async (int idTask) =>
+{
+    return Results.NpContent();
 });
 
 app.MapGet("/employees", () =>
