@@ -35,7 +35,7 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.MapPost("/api/tasks", async (int employeeId, int projectId, DateTime startTime, int duration, string description) =>
+app.MapPost("/api/tasks", async (int employeeId, int projectId, string startTime, int duration, string description) =>
 {
     // Создаем объект задачи (можно использовать анонимный объект)
     var newTask = new
