@@ -56,15 +56,14 @@ app.MapPost("/api/tasks", async (int employeeId, int projectId, DateTime startTi
 
 app.MapGet("/api/tasks", (int employeeId) =>
 {
-    var hardcodedJson = """
+    var hardcodedJson = new
     {
-        "taskId": "789",
-        "projectId": "456",
-        "startTime": "2024-12-07T09:00:00",
-        "duration": 120,
-        "status": "In Progress"
-    }
-    """;
+        taskid = "789",
+        projectId = "456",
+        startTime = "2024-12-07T09:00:00",
+        duration = 120,
+        status = "In Progress"
+    };
 
     return Results.Ok(hardcodedJson);
 });
