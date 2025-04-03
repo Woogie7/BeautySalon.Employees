@@ -35,23 +35,43 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.MapPost("/api/tasks", async (int employeeId, int projectId, DateTime startTime, int duration, description) =>
+app.MapPost("/api/tasks", async (int employeeId, int projectId, DateTime startTime, int duration, string description) =>
 {
-    return Results.Created(employeeId, projectId, startTime, duration, description);
+    // Создаем объект задачи (можно использовать анонимный объект)
+    var newTask = new
+    {
+        EmployeeId = employeeId,
+        ProjectId = projectId,
+        StartTime = startTime,
+        Duration = duration,
+        Description = description
+    };
+
+    // URI созданного ресурса (например, путь к задаче)
+    var resourceUri = $"/api/tasks/{projectId}";
+
+    // Возвращаем HTTP 201 Created с URI и данными задачи
+    return Results.Created(resourceUri, newTask);
 });
 
-app.MapGet("/api/tasks", async (FromQuery employeeId) =>
+app.MapGet("/api/tasks", (int employeeId) =>
 {
-    return Results.Ok("{"taskId": "789",
-"projectId": "456",
-"startTime": "2024-12-07T09:00:00",
-"duration": 120,
-"status": "In Progress"}");
+    var hardcodedJson = """
+    {
+        "taskId": "789",
+        "projectId": "456",
+        "startTime": "2024-12-07T09:00:00",
+        "duration": 120,
+        "status": "In Progress"
+    }
+    """;
+
+    return Results.Ok(hardcodedJson);
 });
 
-app.MapDelete("/api/tasks", async (int idTask) =>
+app.MapDelete("/api/tasks", (int idTask) =>
 {
-    return Results.NpContent();
+    return Results.NoContent();
 });
 
 app.MapGet("/employees", () =>
