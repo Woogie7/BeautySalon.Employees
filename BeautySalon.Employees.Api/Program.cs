@@ -88,7 +88,7 @@ app.MapDelete("/api/tasks", (int idTask) =>
 
 app.MapGet("/employees", () =>
 {
-    return Results.Text("Всем привет!", "text/plain; charset=utf-8");
+    return Results.Text("Всем прицвет!", "text/plain; charset=utf-8");
 });
 
 
