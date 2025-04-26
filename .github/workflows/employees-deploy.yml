@@ -19,7 +19,6 @@ jobs:
           repository: Woogie7/BeautySalon.Deployments
           token: ${{ secrets.DEPLOY_REPO_PAT }}  
           path: deployments  
-          ref: main
 
       - name: Login to DockerHub
         run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
