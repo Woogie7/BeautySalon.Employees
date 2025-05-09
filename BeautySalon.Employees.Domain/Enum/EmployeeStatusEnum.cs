@@ -2,8 +2,8 @@
 {
     public enum EmployeeStatusEnum
     {
-        Active,
-        Inactive,
-        OnVacation
+        Active = 1,
+        Inactive = 2,
+        OnVacation = 3
     }
 }

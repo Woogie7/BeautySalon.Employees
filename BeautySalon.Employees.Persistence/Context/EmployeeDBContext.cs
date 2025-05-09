@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BeautySalon.Employees.Persistence.Context
 {
-    internal class EmployeeDBContext : DbContext
+    public class EmployeeDBContext : DbContext
     {
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Schedule> Schedules { get; set; }

@@ -11,7 +11,7 @@ namespace BeautySalon.Employees.Persistence
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration confing)
         {
-            var сonnection = confing.GetConnectionString("BookingDatabase");
+            var сonnection = confing.GetConnectionString("EmployeesDatabase");
             services.AddDbContext<EmployeeDBContext>(o =>
             {
                 o.UseNpgsql(сonnection);

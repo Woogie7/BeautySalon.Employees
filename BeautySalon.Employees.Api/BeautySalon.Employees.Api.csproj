@@ -9,14 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.4.1-develop.2291" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.4.1-develop.2291" />
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="10.0.0-preview.3.25172.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.37" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BeautySalon.Employees.Application\BeautySalon.Employees.Application.csproj" />
+    <ProjectReference Include="..\BeautySalon.Employees.Infrastructure\BeautySalon.Employees.Infrastructure.csproj" />
     <ProjectReference Include="..\BeautySalon.Employees.Persistence\BeautySalon.Employees.Persistence.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,9 @@
+using BeautySalon.Booking.Infrastructure.Rabbitmq;
+using BeautySalon.Employees.Api;
 using BeautySalon.Employees.Application;
+using BeautySalon.Employees.Infrastructure;
 using BeautySalon.Employees.Persistence;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +15,33 @@ builder.Services.AddSwaggerGen();
  
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
+
+builder.Services.AddMassTransit(busConfing =>
+{
+    busConfing.SetKebabCaseEndpointNameFormatter();
+
+    //busConfing.AddConsumer<>();
+
+    busConfing.UsingRabbitMq((context, configurator) =>
+    {
+        configurator.Host(new Uri("amqp://rabbitmq:5672"), h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        configurator.ConfigureEndpoints(context);
+    });
+});
+
+builder.Services.Configure<MessageBrokerSettings>(builder.Configuration.GetSection("MessageBroker"));
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("EmployeesChache");
+    options.InstanceName = "Employees";
+});
 
 var app = builder.Build();
 
@@ -20,6 +51,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+await app.MigrateDbAsync();
 
 app.MapGet("/employees", () =>
 {
