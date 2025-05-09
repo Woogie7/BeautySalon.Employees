@@ -2,8 +2,8 @@ name: deployment Employees Service
 
 on:
   push:
-    branches: [main]
-
+    branches:
+      - master
 
 jobs:
   build-and-deploy:
