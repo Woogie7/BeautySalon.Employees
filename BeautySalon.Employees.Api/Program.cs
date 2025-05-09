@@ -1,13 +1,10 @@
-using AutoMapper;
 using BeautySalon.Employees.Application;
-using BeautySalon.Employees.Application.DTO;
-using BeautySalon.Employees.Application.Features.CreateEmployee;
-using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Persistence;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -24,18 +21,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapPost("/employees", async (CreateEmployeeRequest createEmployeeRequest, [FromServices]ISender _sender, IMapper _mapper) =>
+app.MapGet("/employees", () =>
 {
-    var command = _mapper.Map<CreateEmployeeCommand>(createEmployeeRequest);
-
-    var result = _sender.Send(command);
-
-    return Results.Created();
+    return Results.Text("Всем прицвет!", "text/plain; charset=utf-8");
 });
 
-app.MapGet("/employees", () => {
-    return Results.Ok("All ok");
+
+app.MapGet("a", () =>
+{
+    return Results.Ok("Привет");
 });
+
 
 app.UseHttpsRedirection();
 
