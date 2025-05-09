@@ -25,4 +25,8 @@
     <ProjectReference Include="..\BeautySalon.Employees.Persistence\BeautySalon.Employees.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Dockerfile" />
+  </ItemGroup>
+
 </Project>
