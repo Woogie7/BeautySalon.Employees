@@ -8,11 +8,13 @@ namespace BeautySalon.Employees.Domain
 {
     public interface IEmployeeRepository
     {
-        bool SavaChangesAsync();
+        Task<bool> SaveChangesAsync();
         Task<IEnumerable<Employee>> GetAllAsync();
         Task<Employee> GetByIdAsync(Guid id);
         Task CreateAsync(Employee employee);
         Task UpdateAsync(Employee employee);
         Task DeleteAsync(Guid id);
+        
+        Task<Employee?> GetByIdWithScheduleAsync(Guid id);
     }
 }

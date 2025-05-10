@@ -1,0 +1,60 @@
+using BeautySalon.Employees.Domain.SeedWork;
+
+namespace BeautySalon.Employees.Domain;
+
+public class Schedule : Entity
+{
+    public Guid Id { get; private set; }
+    public CustomDateOfWeek DateOfWeek { get; private set; }
+    public int DateOfWeekId { get; private set; }
+    public TimeSpan StartTime { get; private set; }
+    public TimeSpan EndTime { get; private set; }
+    
+    public Guid EmployeeId { get; set; }
+    public Employee Employee { get; set; }
+    public bool IsAvailable { get; private set; }
+
+    private Schedule() { }
+
+    public Schedule(Guid id, CustomDateOfWeek dateOfWeek, TimeSpan startTime, TimeSpan endTime)
+    {
+        Id = id;
+        DateOfWeek = dateOfWeek;
+        DateOfWeekId = dateOfWeek.Id;
+        StartTime = startTime;
+        EndTime = endTime;
+        IsAvailable = true;
+    }
+
+
+    public bool OverlapsWith(TimeSpan otherStart, TimeSpan otherEnd)
+    {
+        return !(otherEnd <= StartTime || otherStart >= EndTime);
+    }
+
+    public void MarkUnavailable() => IsAvailable = false;
+    
+    public void UpdateSchedule(CustomDateOfWeek dateOfWeek, TimeSpan startTime, TimeSpan endTime)
+    {
+        if (DateOfWeekId != dateOfWeek.Id)
+        {
+            DateOfWeek = dateOfWeek;
+            DateOfWeekId = dateOfWeek.Id;
+        }
+        
+        if (StartTime != startTime)
+        {
+            StartTime = startTime;
+        }
+
+        if (EndTime != endTime)
+        {
+            EndTime = endTime;
+        }
+        
+        if (OverlapsWith(startTime, endTime))
+        {
+            throw new InvalidOperationException("Новое время пересекается с существующим расписанием.");
+        }
+    }
+}

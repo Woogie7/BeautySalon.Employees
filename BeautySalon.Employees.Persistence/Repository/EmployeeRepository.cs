@@ -12,6 +12,11 @@ namespace BeautySalon.Employees.Persistence.Repository
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly EmployeeDBContext _dbContext;
+        public EmployeeRepository(EmployeeDBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public async Task CreateAsync(Employee employee)
         {
             if (employee == null) throw new ArgumentNullException();
@@ -19,29 +24,50 @@ namespace BeautySalon.Employees.Persistence.Repository
             await _dbContext.Employees.AddAsync(employee);
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var employee = await _dbContext.Employees.FindAsync(id);
+            if (employee != null)
+            {
+                _dbContext.Employees.Remove(employee);
+            }
+        }
+
+        public async Task<Employee?> GetByIdWithScheduleAsync(Guid id)
+        {
+            return await _dbContext.Employees
+                .Include(e => e.Schedules)
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task<IEnumerable<Employee>> GetAllAsync()
         {
-            return await _dbContext.Employees.ToListAsync();
+            return await _dbContext.Employees
+                .Include(e => e.Skills)
+                .Include(e => e.Schedules)
+                .Include(e => e.Status)
+                .ToListAsync();
         }
 
         public async Task<Employee> GetByIdAsync(Guid id)
         {
-            return await _dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id);
+            return await _dbContext.Employees
+                .Include(e => e.Skills)
+                .Include(e => e.Schedules)
+                .Include(e => e.Status)
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public bool SavaChangesAsync()
+
+        public async Task<bool> SaveChangesAsync()
         {
-            return (_dbContext.SaveChanges () >= 0);
+            return await _dbContext.SaveChangesAsync() >= 0;
         }
 
         public Task UpdateAsync(Employee employee)
         {
-            throw new NotImplementedException();
+            _dbContext.Employees.Update(employee);
+            return Task.CompletedTask;
         }
     }
 }

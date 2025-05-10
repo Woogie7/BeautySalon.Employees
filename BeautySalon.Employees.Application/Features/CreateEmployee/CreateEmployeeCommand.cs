@@ -1,9 +1,5 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BeautySalon.Employees.Domain;
 
 namespace BeautySalon.Employees.Application.Features.CreateEmployee
 {
@@ -16,6 +12,6 @@ namespace BeautySalon.Employees.Application.Features.CreateEmployee
         string[] Skill,
         string status
 
-    ) : IRequest;
+    ) : IRequest<Employee>;
     
 }

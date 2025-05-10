@@ -8,12 +8,28 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="MassTransit.Abstractions" Version="8.4.1-develop.2291" />
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.37" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BeautySalon.Booking\BeautySalon.Booking.Contracts\BeautySalon.Booking.Contracts.csproj" />
     <ProjectReference Include="..\BeautySalon.Employees.Domain\BeautySalon.Employees.Domain.csproj" />
+    <ProjectReference Include="..\BeautySalon.Employees.Infrastructure\BeautySalon.Employees.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\AddScheduleToEmployee\" />
+    <Folder Include="Features\GetAllEmployees\" />
+    <Folder Include="Features\GetEmployeeAvailability\" />
+    <Folder Include="Features\GetEmployeeById\" />
+    <Folder Include="Features\GetEmployeeSchedule\" />
+    <Folder Include="Features\MarkAvailabilityBusy\" />
   </ItemGroup>
 
 </Project>

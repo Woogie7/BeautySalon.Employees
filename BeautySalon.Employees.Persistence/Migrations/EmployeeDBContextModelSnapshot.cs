@@ -44,7 +44,7 @@ namespace BeautySalon.Employees.Persistence.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Availabilities");
+                    b.ToTable("Availabilities", (string)null);
                 });
 
             modelBuilder.Entity("BeautySalon.Employees.Domain.CustomDateOfWeek", b =>
@@ -57,11 +57,12 @@ namespace BeautySalon.Employees.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("CustomDateOfWeek");
+                    b.ToTable("CustomDateOfWeeks");
 
                     b.HasData(
                         new
@@ -107,21 +108,8 @@ namespace BeautySalon.Employees.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("StatusId")
                         .HasColumnType("integer");
@@ -130,7 +118,7 @@ namespace BeautySalon.Employees.Persistence.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("BeautySalon.Employees.Domain.EmployeeStatus", b =>
@@ -143,7 +131,8 @@ namespace BeautySalon.Employees.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
@@ -194,7 +183,7 @@ namespace BeautySalon.Employees.Persistence.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Schedules");
+                    b.ToTable("Schedules", (string)null);
                 });
 
             modelBuilder.Entity("BeautySalon.Employees.Domain.Skill", b =>
@@ -208,24 +197,23 @@ namespace BeautySalon.Employees.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Skills");
+                    b.ToTable("Skills", (string)null);
                 });
 
             modelBuilder.Entity("BeautySalon.Employees.Domain.Availability", b =>
                 {
-                    b.HasOne("BeautySalon.Employees.Domain.Employee", "Employee")
-                        .WithMany()
+                    b.HasOne("BeautySalon.Employees.Domain.Employee", null)
+                        .WithMany("Availabilities")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("BeautySalon.Employees.Domain.Employee", b =>
@@ -236,6 +224,78 @@ namespace BeautySalon.Employees.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("BeautySalon.Employees.Domain.ValueObjects.Email", "Email", b1 =>
+                        {
+                            b1.Property<Guid>("EmployeeId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("character varying(255)")
+                                .HasColumnName("Email");
+
+                            b1.HasKey("EmployeeId");
+
+                            b1.ToTable("Employees");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EmployeeId");
+                        });
+
+                    b.OwnsOne("BeautySalon.Employees.Domain.ValueObjects.FullName", "Name", b1 =>
+                        {
+                            b1.Property<Guid>("EmployeeId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("First")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("FirstName");
+
+                            b1.Property<string>("Last")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("LastName");
+
+                            b1.HasKey("EmployeeId");
+
+                            b1.ToTable("Employees");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EmployeeId");
+                        });
+
+                    b.OwnsOne("BeautySalon.Employees.Domain.ValueObjects.PhoneNumber", "Phone", b1 =>
+                        {
+                            b1.Property<Guid>("EmployeeId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("character varying(20)")
+                                .HasColumnName("Phone");
+
+                            b1.HasKey("EmployeeId");
+
+                            b1.ToTable("Employees");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EmployeeId");
+                        });
+
+                    b.Navigation("Email")
+                        .IsRequired();
+
+                    b.Navigation("Name")
+                        .IsRequired();
+
+                    b.Navigation("Phone")
+                        .IsRequired();
+
                     b.Navigation("Status");
                 });
 
@@ -244,7 +304,7 @@ namespace BeautySalon.Employees.Persistence.Migrations
                     b.HasOne("BeautySalon.Employees.Domain.CustomDateOfWeek", "DateOfWeek")
                         .WithMany("Schedules")
                         .HasForeignKey("DateOfWeekId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BeautySalon.Employees.Domain.Employee", "Employee")
@@ -276,6 +336,8 @@ namespace BeautySalon.Employees.Persistence.Migrations
 
             modelBuilder.Entity("BeautySalon.Employees.Domain.Employee", b =>
                 {
+                    b.Navigation("Availabilities");
+
                     b.Navigation("Schedules");
 
                     b.Navigation("Skills");
