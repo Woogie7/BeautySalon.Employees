@@ -26,7 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Dockerfile" />
+    <Content Include="..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
   </ItemGroup>
 
 </Project>
