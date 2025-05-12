@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BeautySalon.Booking\BeautySalon.Booking.Contracts\BeautySalon.Booking.Contracts.csproj" />
-    <ProjectReference Include="..\..\BeautySalon.Booking\BeautySalon.Contracts\BeautySalon.Contracts.csproj" />
     <ProjectReference Include="..\BeautySalon.Employees.Domain\BeautySalon.Employees.Domain.csproj" />
     <ProjectReference Include="..\BeautySalon.Employees.Infrastructure\BeautySalon.Employees.Infrastructure.csproj" />
   </ItemGroup>
