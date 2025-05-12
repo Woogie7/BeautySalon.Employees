@@ -62,7 +62,7 @@ app.MapGet("/employees", () =>
 
 app.MapGet("a", () =>
 {
-    return Results.Ok("Привет");
+    return Results.Ok("Привевт");
 });
 
 
