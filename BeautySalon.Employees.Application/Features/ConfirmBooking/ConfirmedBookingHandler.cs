@@ -1,4 +1,5 @@
 ﻿using BeautySalon.Booking.Infrastructure.Rabbitmq;
+using BeautySalon.Contracts;
 using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.ConfirmBooking
