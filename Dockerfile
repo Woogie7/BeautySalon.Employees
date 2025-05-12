@@ -8,18 +8,15 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-COPY ["BeautySalon.Employees.Api/BeautySalon.Employees.Api.csproj", "BeautySalon.Employees.Api/"]
-COPY ["BeautySalon.Employees.Application/BeautySalon.Employees.Application.csproj", "BeautySalon.Employees.Application/"]
-COPY ["BeautySalon.Employees.Domain/BeautySalon.Employees.Domain.csproj", "BeautySalon.Employees.Domain/"]
-COPY ["BeautySalon.Employees.Infrastructure/BeautySalon.Employees.Infrastructure.csproj", "BeautySalon.Employees.Infrastructure/"]
-COPY ["BeautySalon.Employees.Persistence/BeautySalon.Employees.Persistence.csproj", "BeautySalon.Employees.Persistence/"]
-COPY ["BeautySalon.Contracts/BeautySalon.Contracts/BeautySalon.Contracts.csproj", "BeautySalon.Contracts/BeautySalon.Contracts/"]
-
-RUN dotnet restore "BeautySalon.Employees.Api/BeautySalon.Employees.Api.csproj"
+# Копируем всё сразу, включая BeautySalon.Contracts
 COPY . .
+
+# Восстанавливаем зависимости
+RUN dotnet restore "BeautySalon.Employees.Api/BeautySalon.Employees.Api.csproj"
+
+# Собираем
 WORKDIR "/src/BeautySalon.Employees.Api"
 RUN dotnet build "BeautySalon.Employees.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
