@@ -10,7 +10,6 @@ WORKDIR /src
 COPY ["BeautySalon.Employees.Api/BeautySalon.Employees.Api.csproj", "BeautySalon.Employees.Api/"]
 COPY ["BeautySalon.Employees.Application/BeautySalon.Employees.Application.csproj", "BeautySalon.Employees.Application/"]
 COPY ["BeautySalon.Employees.Domain/BeautySalon.Employees.Domain.csproj", "BeautySalon.Employees.Domain/"]
-COPY ["../BeautySalon.Booking/BeautySalon.Contracts/BeautySalon.Contracts.csproj", "../BeautySalon.Booking/BeautySalon.Contracts/"]
 COPY ["BeautySalon.Employees.Infrastructure/BeautySalon.Employees.Infrastructure.csproj", "BeautySalon.Employees.Infrastructure/"]
 COPY ["BeautySalon.Employees.Persistence/BeautySalon.Employees.Persistence.csproj", "BeautySalon.Employees.Persistence/"]
 RUN dotnet restore "BeautySalon.Employees.Api/BeautySalon.Employees.Api.csproj"
