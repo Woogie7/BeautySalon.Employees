@@ -1,9 +1,11 @@
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Employees.Api;
 using BeautySalon.Employees.Application;
+using BeautySalon.Employees.Application.Features.ConfirmBooking;
 using BeautySalon.Employees.Infrastructure;
 using BeautySalon.Employees.Persistence;
 using MassTransit;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +67,12 @@ app.MapGet("a", () =>
     return Results.Ok("Привевт");
 });
 
+app.MapPost("/confirmed", async (ConfirmBooked reqest, ISender _sender) =>
+{
+    await _sender.Send(reqest);
+
+    return Results.Ok();
+});
 
 app.UseHttpsRedirection();
 
