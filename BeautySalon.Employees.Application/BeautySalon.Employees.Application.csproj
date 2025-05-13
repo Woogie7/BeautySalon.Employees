@@ -22,7 +22,6 @@
     <ProjectReference Include="..\BeautySalon.Employees.Domain\BeautySalon.Employees.Domain.csproj" />
     <ProjectReference Include="..\BeautySalon.Employees.Infrastructure\BeautySalon.Employees.Infrastructure.csproj" />
     <ProjectReference Include="..\src\BeautySalon.Contracts\BeautySalon.Contracts\BeautySalon.Contracts.csproj" />
-      
   </ItemGroup>
 
   <ItemGroup>
