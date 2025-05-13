@@ -10,11 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout Source Code
+      - name: Checkout source repo
         uses: actions/checkout@v4
-        with:
-            path: src
-            
+      
       - name: Checkout Deployment Repo (BeautySalon.Deployments)
         uses: actions/checkout@v4
         with:
