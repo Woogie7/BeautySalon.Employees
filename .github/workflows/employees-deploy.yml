@@ -10,9 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout source repo
+      - name: Checkout source repo with submodules
         uses: actions/checkout@v4
-      
+        with:
+            submodules: 'recursive'
+            token: ${{ secrets.GITHUB_TOKEN }}  # Для доступа к приватному submodule
+            
+      - name: Verify submodule was downloaded
+        run: |
+            ls -la src/BeautySalon.Contracts/
+            cat src/BeautySalon.Contracts/BeautySalon.Contracts.csproj
+          
+          
       - name: Checkout Deployment Repo (BeautySalon.Deployments)
         uses: actions/checkout@v4
         with:
