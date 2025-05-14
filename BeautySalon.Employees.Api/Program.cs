@@ -11,6 +11,7 @@ using BeautySalon.Employees.Infrastructure;
 using BeautySalon.Employees.Persistence;
 using MassTransit;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,7 +62,7 @@ if (app.Environment.IsDevelopment())
 
 await app.MigrateDbAsync();
 
-app.MapGet("/employees", async (ISender _sender) =>
+app.MapGet("/employees", async ([FromServices]ISender _sender) =>
 {
     var result = await _sender.Send(new GetEmployeesQuery());
 
@@ -71,19 +72,19 @@ app.MapGet("/employees", async (ISender _sender) =>
     return Results.NotFound();
 });
 
-app.MapPost("/employees", async (CreateEmployeeCommand command, ISender mediator) =>
+app.MapPost("/employees", async ([FromBody] CreateEmployeeCommand command, [FromServices] ISender mediator) =>
 {
     var result = await mediator.Send(command);
     return Results.Created($"/employees/{result.Id}", result);
 });
 
-app.MapPost("/employees/{employeeId}/schedules", async (Guid employeeId, AddScheduleToEmployeeCommand command, ISender mediator) =>
+app.MapPost("/employees/{employeeId}/schedules", async ([FromRoute] Guid employeeId, [FromBody] AddScheduleToEmployeeCommand command, [FromServices] ISender mediator) =>
 {
     var result = await mediator.Send(command);
     return Results.Ok(result);
 });
 
-app.MapDelete("/employees/{employeeId}/schedules/{scheduleId}", async (Guid employeeId, Guid scheduleId, ISender mediator) =>
+app.MapDelete("/employees/{employeeId}/schedules/{scheduleId}", async ([FromRoute] Guid employeeId, [FromRoute] Guid scheduleId, [FromServices] ISender mediator) =>
 {
     var command = new RemoveScheduleFromEmployeeCommand(employeeId, scheduleId);
 
@@ -91,18 +92,18 @@ app.MapDelete("/employees/{employeeId}/schedules/{scheduleId}", async (Guid empl
     return Results.Ok(result);
 });
 
-app.MapGet("/employees/{employeeId}/availability", async (
-    Guid employeeId,
-    CheckEmployeeAvailabilityCommand command,
-    ISender mediator) =>
-{
-    var isAvailable = await mediator.Send(command);
-    return Results.Ok(new { Available = isAvailable });
-});
+// app.MapGet("/employees/{employeeId}/availability", async (
+//     Guid employeeId,
+//     CheckEmployeeAvailabilityCommand command,
+//     ISender mediator) =>
+// {
+//     var isAvailable = await mediator.Send(command);
+//     return Results.Ok(new { Available = isAvailable });
+// });
 
-app.MapPost("/confirmed", async (ConfirmBooked reqest, ISender _sender) =>
+app.MapPost("/confirmed", async ([FromBody] ConfirmBooked request, [FromServices] ISender _sender) =>
 {
-    await _sender.Send(reqest);
+    await _sender.Send(request);
 
     return Results.Ok();
 });
