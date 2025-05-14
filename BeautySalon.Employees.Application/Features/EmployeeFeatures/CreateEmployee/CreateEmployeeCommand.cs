@@ -9,8 +9,7 @@ namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmpl
         string LastName,
         string Email,
         string Phone,
-        List<Guid> ServiceIds,
-        string status
+        List<Guid> ServiceIds
 
     ) : IRequest<Employee>;
     
