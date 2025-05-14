@@ -20,7 +20,7 @@ public class MarkAvailabilityBusyCommandHandler : IRequestHandler<MarkAvailabili
         if (employee == null)
             throw new NotFoundException("Сотрудник не найден.");
 
-        employee.MarkAvailabilityBusy(request.AvailabilityId);
+                //employee.(request.AvailabilityId);
 
         await _repository.SaveChangesAsync();
     }

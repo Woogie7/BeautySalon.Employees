@@ -24,7 +24,6 @@ namespace BeautySalon.Employees.Application.AutoMapper
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => new PhoneNumber(src.Phone)))
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(_ => true))
                 .ForMember(dest => dest.Schedules, opt => opt.Ignore())
-                .ForMember(dest => dest.Status, opt => opt.Ignore())
                 .ForMember(dest => dest.Skills, opt => opt.Ignore()); // Игнорируем, так как навыки добавляются отдельно
         }
         

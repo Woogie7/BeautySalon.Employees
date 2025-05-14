@@ -39,12 +39,7 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
                 .HasMaxLength(20)
                 .IsRequired();
         });
-
-        builder.HasOne(e => e.Status)
-            .WithMany(s => s.Employees)
-            .HasForeignKey(e => e.StatusId);
-
-
+        
         builder.HasMany(e => e.Schedules)
             .WithOne(s => s.Employee)
             .HasForeignKey(s => s.EmployeeId)

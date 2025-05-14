@@ -58,7 +58,6 @@ namespace BeautySalon.Employees.Persistence.Repository
             return await _dbContext.Employees
                 .Include(e => e.Skills)
                 .Include(e => e.Schedules)
-                .Include(e => e.Status)
                 .ToListAsync();
         }
 
@@ -67,7 +66,6 @@ namespace BeautySalon.Employees.Persistence.Repository
             return await _dbContext.Employees
                 .Include(e => e.Skills)
                 .Include(e => e.Schedules)
-                .Include(e => e.Status)
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 

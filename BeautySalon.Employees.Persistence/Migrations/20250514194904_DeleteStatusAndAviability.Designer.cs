@@ -3,6 +3,7 @@ using System;
 using BeautySalon.Employees.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BeautySalon.Employees.Persistence.Migrations
 {
     [DbContext(typeof(EmployeeDBContext))]
-    partial class EmployeeDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250514194904_DeleteStatusAndAviability")]
+    partial class DeleteStatusAndAviability
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
