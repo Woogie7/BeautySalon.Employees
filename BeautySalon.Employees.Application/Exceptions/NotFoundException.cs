@@ -2,6 +2,8 @@ namespace BeautySalon.Employees.Application.Exceptions;
 
 public class NotFoundException : Exception
 {
+    public NotFoundException(string message, Guid requestEmployeeId) : base(message) {}
+    
     public NotFoundException(string message) : base(message) {}
 }
 

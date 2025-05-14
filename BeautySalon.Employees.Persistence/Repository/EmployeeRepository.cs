@@ -17,11 +17,24 @@ namespace BeautySalon.Employees.Persistence.Repository
             _dbContext = dbContext;
         }
 
+        public async Task<Service> GetServiceByIdAsync(Guid id)
+        {
+            return await _dbContext.Services
+                .FirstOrDefaultAsync(e => e.Id == id);
+        }
+
         public async Task CreateAsync(Employee employee)
         {
             if (employee == null) throw new ArgumentNullException();
 
             await _dbContext.Employees.AddAsync(employee);
+        }
+
+        public async Task CreateServiceAsync(Service service)
+        {
+            if (service == null) throw new ArgumentNullException();
+
+            await _dbContext.Services.AddAsync(service);
         }
 
         public async Task DeleteAsync(Guid id)

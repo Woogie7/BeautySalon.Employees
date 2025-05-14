@@ -11,7 +11,9 @@ namespace BeautySalon.Employees.Domain
         Task<bool> SaveChangesAsync();
         Task<IEnumerable<Employee>> GetAllAsync();
         Task<Employee> GetByIdAsync(Guid id);
+        Task<Service> GetServiceByIdAsync(Guid id);
         Task CreateAsync(Employee employee);
+        Task CreateServiceAsync(Service service);
         Task UpdateAsync(Employee employee);
         Task DeleteAsync(Guid id);
         

@@ -2,7 +2,7 @@ using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
 using MediatR;
 
-namespace BeautySalon.Employees.Application.Features.DeleteEmployee;
+namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.DeleteEmployee;
 
 public sealed class DeleteEmployeeHandler : IRequestHandler<DeleteEmployeeCommand, Employee?>
 {

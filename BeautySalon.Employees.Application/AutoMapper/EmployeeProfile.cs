@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using BeautySalon.Employees.Application.DTO;
-using BeautySalon.Employees.Application.Features.CreateEmployee;
 using BeautySalon.Employees.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmployee;
 
 namespace BeautySalon.Employees.Application.AutoMapper
 {

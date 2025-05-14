@@ -1,7 +1,12 @@
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Employees.Api;
 using BeautySalon.Employees.Application;
+using BeautySalon.Employees.Application.Features.AddScheduleToEmployee;
 using BeautySalon.Employees.Application.Features.ConfirmBooking;
+using BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmployee;
+using BeautySalon.Employees.Application.Features.EmployeeFeatures.GetAllEmployees;
+using BeautySalon.Employees.Application.Features.ScheduleFeatures.CheckEmployeeAvailability;
+using BeautySalon.Employees.Application.Features.ScheduleFeatures.RemoveScheduleFromEmployee;
 using BeautySalon.Employees.Infrastructure;
 using BeautySalon.Employees.Persistence;
 using MassTransit;
@@ -56,15 +61,43 @@ if (app.Environment.IsDevelopment())
 
 await app.MigrateDbAsync();
 
-app.MapGet("/employees", () =>
+app.MapGet("/employees", async (ISender _sender) =>
 {
-    return Results.Text("Всем прицвет!", "text/plain; charset=utf-8");
+    var result = await _sender.Send(new GetEmployeesQuery());
+
+    if (result != null && result.Any())
+        return Results.Ok(result);
+
+    return Results.NotFound();
 });
 
-
-app.MapGet("a", () =>
+app.MapPost("/employees", async (CreateEmployeeCommand command, ISender mediator) =>
 {
-    return Results.Ok("Привевт");
+    var result = await mediator.Send(command);
+    return Results.Created($"/employees/{result.Id}", result);
+});
+
+app.MapPost("/employees/{employeeId}/schedules", async (Guid employeeId, AddScheduleToEmployeeCommand command, ISender mediator) =>
+{
+    var result = await mediator.Send(command);
+    return Results.Ok(result);
+});
+
+app.MapDelete("/employees/{employeeId}/schedules/{scheduleId}", async (Guid employeeId, Guid scheduleId, ISender mediator) =>
+{
+    var command = new RemoveScheduleFromEmployeeCommand(employeeId, scheduleId);
+
+    var result = await mediator.Send(command);
+    return Results.Ok(result);
+});
+
+app.MapGet("/employees/{employeeId}/availability", async (
+    Guid employeeId,
+    CheckEmployeeAvailabilityCommand command,
+    ISender mediator) =>
+{
+    var isAvailable = await mediator.Send(command);
+    return Results.Ok(new { Available = isAvailable });
 });
 
 app.MapPost("/confirmed", async (ConfirmBooked reqest, ISender _sender) =>

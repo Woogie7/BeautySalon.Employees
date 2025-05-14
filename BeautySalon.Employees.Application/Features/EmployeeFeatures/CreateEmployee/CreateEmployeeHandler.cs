@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
 using BeautySalon.Employees.Domain;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BeautySalon.Employees.Application.Features.CreateEmployee
+namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmployee
 {
     internal class CreateEmployeeHandler : IRequestHandler<CreateEmployeeCommand, Employee>
     {
@@ -23,6 +18,12 @@ namespace BeautySalon.Employees.Application.Features.CreateEmployee
         public async Task<Employee> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
             var employee = _mapper.Map<Employee>(request);
+            
+            foreach (var serviceId in request.ServiceIds)
+            {
+                employee.AddSkill(serviceId);
+            }
+            
             await _employeeRepository.CreateAsync(employee);
             await _employeeRepository.SaveChangesAsync();
 

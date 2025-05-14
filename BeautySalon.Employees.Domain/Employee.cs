@@ -60,26 +60,72 @@ public class Employee : Entity
             _schedules.Remove(schedule);
         }
     }
+    
+    public bool IsAvailableForBooking(DateTime startTime, DateTime endTime)
+    {
+        var start = startTime.TimeOfDay;
+        var end = endTime.TimeOfDay;
+
+        foreach (var schedule in Schedules)
+        {
+            if (schedule.IsAvailable && schedule.OverlapsWith(start, end))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    
+    public void BookTime(DateTime startTime, DateTime endTime)
+    {
+        if (IsAvailableForBooking(startTime, endTime))
+        {
+            foreach (var schedule in Schedules)
+            {
+                if (schedule.OverlapsWith(startTime.TimeOfDay, endTime.TimeOfDay))
+                {
+                    schedule.MarkUnavailable();
+                }
+            }
+        }
+        else
+        {
+            throw new InvalidOperationException("Employee is not available at the selected time.");
+        }
+    }
+    
+    public void CancelBooking(DateTime startTime, DateTime endTime)
+    {
+        foreach (var schedule in Schedules)
+        {
+            if (schedule.OverlapsWith(startTime.TimeOfDay, endTime.TimeOfDay))
+            {
+                schedule.MarkAvailable();
+            }
+        }
+    }
 
     public void UpdateName(string first, string last) => Name = new FullName(first, last);
     public void UpdatePhone(string phone) => Phone = new PhoneNumber(phone);
     public void UpdateEmail(string email) => Email = new Email(email);
     public void UpdateStatus(int statusId) => StatusId = statusId;  
 
-    public void AddSkill(string skillName)
+    public void AddSkill(Guid serviceId)
     {
-        if (!_skills.Any(s => s.Name == skillName))
-            _skills.Add(Skill.Create(Id, skillName));
+        if (!_skills.Any(s => s.ServiceId == serviceId))
+            _skills.Add(Skill.Create(Id, serviceId));
     }
 
-    public void RemoveSkill(string skillName)
+    public void RemoveSkill(Guid serviceId)
     {
-        var skill = _skills.FirstOrDefault(s => s.Name == skillName);
+        var skill = _skills.FirstOrDefault(s => s.ServiceId == serviceId);
         if (skill != null)
             _skills.Remove(skill);
     }
 
     public void ChangeStatus(EmployeeStatus newStatus) => Status = newStatus;
+
     
     public void MarkAllSchedulesUnavailable()
     {
@@ -87,6 +133,15 @@ public class Employee : Entity
         {
             schedule.MarkUnavailable();
         }
+    }
+
+    public void MarkAvailabilityBusy(Guid availabilityId)
+    {
+        var availability = _availabilities.FirstOrDefault(a => a.Id == availabilityId);
+        if (availability == null)
+            throw new InvalidOperationException("Доступность не найдена.");
+
+        availability.MarkBusy();
     }
 
     

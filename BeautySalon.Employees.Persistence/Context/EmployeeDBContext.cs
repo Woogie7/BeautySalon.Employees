@@ -11,6 +11,7 @@ namespace BeautySalon.Employees.Persistence.Context
         public DbSet<Skill> Skills { get; set; }
         public DbSet<Availability> Availabilities { get; set; }
         public DbSet<CustomDateOfWeek> CustomDateOfWeeks { get; set; }
+        public DbSet<Service> Services { get; set; }
 
         public EmployeeDBContext(DbContextOptions<EmployeeDBContext> options) : base(options) { }
 

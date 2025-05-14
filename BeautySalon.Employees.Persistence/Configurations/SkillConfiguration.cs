@@ -11,8 +11,15 @@ public class SkillConfiguration : IEntityTypeConfiguration<Skill>
         builder.ToTable("Skills");
         builder.HasKey(s => s.Id);
 
-        builder.Property(s => s.Name)
-            .IsRequired()
-            .HasMaxLength(100);
+        builder.HasOne(s => s.Employee)
+            .WithMany(e => e.Skills)
+            .HasForeignKey(s => s.EmployeeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(s => s.Service)
+            .WithMany()
+            .HasForeignKey(s => s.ServiceId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
+
 }

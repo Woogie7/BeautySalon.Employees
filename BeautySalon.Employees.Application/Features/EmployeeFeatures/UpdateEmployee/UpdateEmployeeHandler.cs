@@ -24,8 +24,7 @@ public sealed class UpdateEmployeeHandler : IRequestHandler<UpdateEmployeeComman
         {
             throw new NotFoundException("Сотрудник не найден.");
         }
-
-        // Маппинг расписания
+        
         foreach (var scheduleDto in request.Schedules)
         {
             var dateOfWeek = employee.Schedules

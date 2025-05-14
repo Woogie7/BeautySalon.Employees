@@ -5,18 +5,21 @@ namespace BeautySalon.Employees.Domain;
 public class Skill : Entity
 {
     public Guid EmployeeId { get; private set; }
-    public Employee Employee { get; set; }
-    public string Name { get; private set; }
+    public Guid ServiceId { get; private set; }
 
-    private Skill() { } // For EF
+    public Employee Employee { get; private set; }
+    public Service Service { get; private set; }
 
-    private Skill(Guid employeeId, string name)
+    private Skill() { }
+
+    private Skill(Guid employeeId, Guid serviceId)
     {
         Id = Guid.NewGuid();
         EmployeeId = employeeId;
-        Name = name;
+        ServiceId = serviceId;
     }
 
-    public static Skill Create(Guid employeeId, string name)
-        => new Skill(employeeId, name);
+    public static Skill Create(Guid employeeId, Guid serviceId)
+        => new Skill(employeeId, serviceId);
 }
+

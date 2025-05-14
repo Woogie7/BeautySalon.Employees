@@ -26,6 +26,11 @@ public class Schedule : Entity
         IsAvailable = true;
     }
 
+    public static Schedule Create(Guid id, CustomDateOfWeek dateOfWeek, TimeSpan startTime, TimeSpan endTime)
+    {
+        return new Schedule(id, dateOfWeek, startTime, endTime);
+    }
+
 
     public bool OverlapsWith(TimeSpan otherStart, TimeSpan otherEnd)
     {
@@ -33,6 +38,7 @@ public class Schedule : Entity
     }
 
     public void MarkUnavailable() => IsAvailable = false;
+    public void MarkAvailable() => IsAvailable = true;
     
     public void UpdateSchedule(CustomDateOfWeek dateOfWeek, TimeSpan startTime, TimeSpan endTime)
     {

@@ -1,7 +1,7 @@
-﻿using MediatR;
-using BeautySalon.Employees.Domain;
+﻿using BeautySalon.Employees.Domain;
+using MediatR;
 
-namespace BeautySalon.Employees.Application.Features.CreateEmployee
+namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmployee
 {
     public record CreateEmployeeCommand
     (
@@ -9,7 +9,7 @@ namespace BeautySalon.Employees.Application.Features.CreateEmployee
         string LastName,
         string Email,
         string Phone,
-        string[] Skill,
+        List<Guid> ServiceIds,
         string status
 
     ) : IRequest<Employee>;

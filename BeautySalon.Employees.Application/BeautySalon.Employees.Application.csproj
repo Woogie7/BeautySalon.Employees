@@ -25,12 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\AddScheduleToEmployee\" />
-    <Folder Include="Features\GetAllEmployees\" />
-    <Folder Include="Features\GetEmployeeAvailability\" />
-    <Folder Include="Features\GetEmployeeById\" />
-    <Folder Include="Features\GetEmployeeSchedule\" />
-    <Folder Include="Features\MarkAvailabilityBusy\" />
+    <Folder Include="Features\EmployeeFeatures\GetEmployeeAvailability\" />
+    <Folder Include="Features\EmployeeFeatures\GetEmployeeById\" />
+    <Folder Include="Features\EmployeeFeatures\GetEmployeeSchedule\" />
+    <Folder Include="Features\ScheduleFeatures\DeactivateScheduleForEmployee\" />
   </ItemGroup>
 
 </Project>
