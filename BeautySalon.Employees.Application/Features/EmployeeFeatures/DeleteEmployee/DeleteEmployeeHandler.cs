@@ -15,7 +15,7 @@ public sealed class DeleteEmployeeHandler : IRequestHandler<DeleteEmployeeComman
 
     public async Task<Employee?> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
     {
-        var employee = await _repository.GetByIdWithScheduleAsync(request.Id);
+        var employee = await _repository.GetByIdWithSchedulesAsync(request.Id);
         if (employee == null)
             throw new NotFoundException("Сотрудник не найден");
         employee.Deactivate();

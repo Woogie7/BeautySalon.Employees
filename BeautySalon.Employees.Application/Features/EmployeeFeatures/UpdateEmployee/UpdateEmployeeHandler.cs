@@ -28,7 +28,7 @@ public sealed class UpdateEmployeeHandler : IRequestHandler<UpdateEmployeeComman
         foreach (var scheduleDto in request.Schedules)
         {
             var dateOfWeek = employee.Schedules
-                .FirstOrDefault(s => s.DateOfWeekId == scheduleDto.DateOfWeek)?.DateOfWeek;
+                .FirstOrDefault(s => s.DateOfWeekId == scheduleDto.DateOfWeekId)?.DateOfWeek;
 
             if (dateOfWeek == null)
             {

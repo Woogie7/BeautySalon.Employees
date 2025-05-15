@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
+using BeautySalon.Employees.Persistence.Repository;
 using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmployee
@@ -7,11 +9,13 @@ namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmpl
     internal class CreateEmployeeHandler : IRequestHandler<CreateEmployeeCommand, Employee>
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IServiceRepository _serviceRepository;
         private readonly IMapper _mapper;
 
-        public CreateEmployeeHandler(IEmployeeRepository employeeRepository, IMapper mapper)
+        public CreateEmployeeHandler(IEmployeeRepository employeeRepository, IMapper mapper, IServiceRepository serviceRepository)
         {
             _employeeRepository = employeeRepository;
+            _serviceRepository = serviceRepository;
             _mapper = mapper;
         }
 
@@ -21,6 +25,8 @@ namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmpl
             
             foreach (var serviceId in request.ServiceIds)
             {
+                if (!await _serviceRepository.ExistsAsync(serviceId))
+                    throw new NotFoundException($"Service with ID {serviceId} not found");
                 employee.AddSkill(serviceId);
             }
             

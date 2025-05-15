@@ -17,6 +17,7 @@ namespace BeautySalon.Employees.Persistence
                 o.UseNpgsql(сonnection);
             });
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IServiceRepository, ServiceRepository>();
 
             return services;
         }

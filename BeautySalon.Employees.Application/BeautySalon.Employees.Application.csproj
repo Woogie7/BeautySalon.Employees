@@ -22,12 +22,10 @@
     
     <ProjectReference Include="..\BeautySalon.Employees.Domain\BeautySalon.Employees.Domain.csproj" />
     <ProjectReference Include="..\BeautySalon.Employees.Infrastructure\BeautySalon.Employees.Infrastructure.csproj" />
+    <ProjectReference Include="..\BeautySalon.Employees.Persistence\BeautySalon.Employees.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\EmployeeFeatures\GetEmployeeAvailability\" />
-    <Folder Include="Features\EmployeeFeatures\GetEmployeeById\" />
-    <Folder Include="Features\EmployeeFeatures\GetEmployeeSchedule\" />
     <Folder Include="Features\ScheduleFeatures\DeactivateScheduleForEmployee\" />
   </ItemGroup>
 

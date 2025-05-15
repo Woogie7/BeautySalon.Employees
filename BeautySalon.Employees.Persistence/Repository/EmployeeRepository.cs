@@ -46,13 +46,18 @@ namespace BeautySalon.Employees.Persistence.Repository
             }
         }
 
-        public async Task<Employee?> GetByIdWithScheduleAsync(Guid id)
+        public async Task<Employee?> GetByIdWithSchedulesAsync(Guid employeeId)
         {
             return await _dbContext.Employees
                 .Include(e => e.Schedules)
-                .FirstOrDefaultAsync(e => e.Id == id);
+                .FirstOrDefaultAsync(e => e.Id == employeeId);
         }
 
+        public async Task<IEnumerable<Employee>> GetByServiceIdAsync(Guid serviceId)
+        {
+            return await _dbContext.Employees.Where(e =>e.Id == serviceId).AsNoTracking().ToListAsync();
+        }
+        
         public async Task<IEnumerable<Employee>> GetAllAsync()
         {
             return await _dbContext.Employees

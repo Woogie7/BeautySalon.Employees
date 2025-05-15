@@ -9,7 +9,9 @@ public class Service : Entity
     public TimeSpan Duration { get; private set; }
     public decimal Price { get; private set; }
 
-    private Service() { }
+    private Service()
+    {
+    }
 
     private Service(string name, string description, TimeSpan duration, decimal price)
     {
@@ -24,4 +26,13 @@ public class Service : Entity
     {
         return new Service(name, description, duration, price);
     }
+    public void Update(string name, string description, TimeSpan duration, decimal price)
+    {
+        Name = name;
+        Description = description;
+        Duration = duration;
+        Price = price;
+    }
+
 }
+    

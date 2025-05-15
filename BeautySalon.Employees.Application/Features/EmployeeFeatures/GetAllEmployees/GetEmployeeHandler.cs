@@ -1,19 +1,24 @@
+using AutoMapper;
+using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Domain;
 using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.GetAllEmployees;
 
-public class GetEmployeeHandler: IRequestHandler<GetEmployeesQuery, IEnumerable<Employee>>
+public class GetAllEmployeesQueryHandler : IRequestHandler<GetAllEmployeesQuery, IEnumerable<EmployeeDto>>
 {
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IMapper _mapper;
 
-    public GetEmployeeHandler(IEmployeeRepository employeeRepository)
+    public GetAllEmployeesQueryHandler(IEmployeeRepository employeeRepository, IMapper mapper)
     {
         _employeeRepository = employeeRepository;
+        _mapper = mapper;
     }
 
-    public Task<IEnumerable<Employee>> Handle(GetEmployeesQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<EmployeeDto>> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken)
     {
-        return _employeeRepository.GetAllAsync();
+        var employees = await _employeeRepository.GetAllAsync(); // Метод должен вернуть сотрудников с расписанием и услугами
+        return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
     }
 }

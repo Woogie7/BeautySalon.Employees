@@ -1,8 +1,9 @@
 using BeautySalon.Employees.Application.Exceptions;
+using BeautySalon.Employees.Application.Features.AddScheduleToEmployee;
 using BeautySalon.Employees.Domain;
 using MediatR;
 
-namespace BeautySalon.Employees.Application.Features.AddScheduleToEmployee;
+namespace BeautySalon.Employees.Application.Features.ScheduleFeatures.AddScheduleToEmployee;
 
 public class AddScheduleToEmployeeCommandHandler : IRequestHandler<AddScheduleToEmployeeCommand, Employee>
 {
