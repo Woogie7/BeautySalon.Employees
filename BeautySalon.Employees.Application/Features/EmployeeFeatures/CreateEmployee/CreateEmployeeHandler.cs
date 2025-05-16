@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Persistence.Repository;
@@ -6,7 +7,7 @@ using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmployee
 {
-    internal class CreateEmployeeHandler : IRequestHandler<CreateEmployeeCommand, Employee>
+    internal class CreateEmployeeHandler : IRequestHandler<CreateEmployeeCommand, EmployeeDto>
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IServiceRepository _serviceRepository;
@@ -19,7 +20,7 @@ namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmpl
             _mapper = mapper;
         }
 
-        public async Task<Employee> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<EmployeeDto> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
             var employee = _mapper.Map<Employee>(request);
             
@@ -33,7 +34,7 @@ namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmpl
             await _employeeRepository.CreateAsync(employee);
             await _employeeRepository.SaveChangesAsync();
 
-            return employee;
+            return _mapper.Map<EmployeeDto>(employee);
         }
     }
 }

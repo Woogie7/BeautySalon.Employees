@@ -1,4 +1,5 @@
-﻿using BeautySalon.Employees.Domain;
+﻿using BeautySalon.Employees.Application.DTO;
+using BeautySalon.Employees.Domain;
 using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmployee
@@ -11,6 +12,6 @@ namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmpl
         string Phone,
         List<Guid> ServiceIds
 
-    ) : IRequest<Employee>;
+    ) : IRequest<EmployeeDto>;
     
 }

@@ -1,3 +1,4 @@
+using BeautySalon.Employees.Application.Features.ServiceFeatures.AddServiceToEmployee;
 using BeautySalon.Employees.Application.Features.ServiceFeatures.CreateService;
 using BeautySalon.Employees.Application.Features.ServiceFeatures.GetAllServices;
 using MediatR;
@@ -31,12 +32,12 @@ public static class ServiceEndpoints
             return Results.NoContent();
         });
 
-        group.MapGet("/", async (ISender mediator) =>
+        group.MapPost("/AddServiceToEmployee", async ([AsParameters]Guid emploeeId, [AsParameters]Guid serviceId, ISender mediator) =>
         {
-            var services = await mediator.Send(new GetAllServicesQuery());
-            return Results.Ok(services);
+            await mediator.Send(new AddServiceToEmployeeCommand(emploeeId, serviceId));
+            return Results.Ok();
         }); 
-
+        
         return app;
     }
 }
