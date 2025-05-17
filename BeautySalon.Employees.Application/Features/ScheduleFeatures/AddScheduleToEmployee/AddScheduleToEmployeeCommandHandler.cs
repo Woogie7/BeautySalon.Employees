@@ -1,3 +1,5 @@
+using AutoMapper;
+using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Application.Features.AddScheduleToEmployee;
 using BeautySalon.Employees.Domain;
@@ -6,16 +8,16 @@ using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.ScheduleFeatures.AddScheduleToEmployee;
 
-public class AddScheduleToEmployeeCommandHandler : IRequestHandler<AddScheduleToEmployeeCommand, Employee>
+public class AddScheduleToEmployeeCommandHandler : IRequestHandler<AddScheduleToEmployeeCommand, EmployeeDto>
 {
     private readonly IEmployeeRepository _employeeRepository;
-
+    private readonly IMapper _mapper;
     public AddScheduleToEmployeeCommandHandler(IEmployeeRepository employeeRepository)
     {
         _employeeRepository = employeeRepository;
     }
 
-    public async Task<Employee> Handle(AddScheduleToEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<EmployeeDto> Handle(AddScheduleToEmployeeCommand request, CancellationToken cancellationToken)
     {
         var employee = await _employeeRepository.GetByIdAsync(request.EmployeeId);
 
@@ -43,6 +45,6 @@ public class AddScheduleToEmployeeCommandHandler : IRequestHandler<AddScheduleTo
 
         await _employeeRepository.UpdateAsync(employee);
 
-        return employee;
+        return _mapper.Map<EmployeeDto>(employee);
     }
 }

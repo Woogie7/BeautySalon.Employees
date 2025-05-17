@@ -1,3 +1,4 @@
+using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Domain.Enum;
 using MediatR;
@@ -9,4 +10,4 @@ public record AddScheduleToEmployeeCommand(
     string DayOfWeek,
     TimeSpan StartTime,
     TimeSpan EndTime
-) : IRequest<Employee>;
+) : IRequest<EmployeeDto>;

@@ -25,8 +25,4 @@
     <ProjectReference Include="..\BeautySalon.Employees.Persistence\BeautySalon.Employees.Persistence.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\ScheduleFeatures\DeactivateScheduleForEmployee\" />
-  </ItemGroup>
-
 </Project>
