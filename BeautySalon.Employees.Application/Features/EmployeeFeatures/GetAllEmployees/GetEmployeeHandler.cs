@@ -18,7 +18,7 @@ public class GetAllEmployeesQueryHandler : IRequestHandler<GetAllEmployeesQuery,
 
     public async Task<IEnumerable<EmployeeDto>> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken)
     {
-        var employees = await _employeeRepository.GetAllAsync(); // Метод должен вернуть сотрудников с расписанием и услугами
+        var employees = await _employeeRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
     }
 }

@@ -9,9 +9,10 @@ namespace BeautySalon.Employees.Persistence.Repository
     {
         private readonly EmployeeDBContext _dbContext;
         private readonly ILogger<EmployeeRepository> _logger;
-        public EmployeeRepository(EmployeeDBContext dbContext)
+        public EmployeeRepository(EmployeeDBContext dbContext, ILogger<EmployeeRepository> logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
 
         public async Task<Service> GetServiceByIdAsync(Guid id)
