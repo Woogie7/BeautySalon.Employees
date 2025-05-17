@@ -1,3 +1,4 @@
+using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Employees.Persistence.Repository;
 using MediatR;
 

@@ -21,7 +21,7 @@ namespace BeautySalon.Employees.Domain
 
         private Employee()
         {
-        } // For EF
+        }
 
         private Employee(Guid id, FullName name, Email email, PhoneNumber phone)
         {

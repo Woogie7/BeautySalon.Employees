@@ -31,10 +31,19 @@ namespace BeautySalon.Employees.Application.AutoMapper
                 .ForMember(dest => dest.Services, opt => opt.MapFrom(src => src.Skills.Select(s => s.Service)))
                 .ForMember(dest => dest.Schedules, opt => opt.MapFrom(src => src.Schedules));
 
-            CreateMap<Service, ServiceDto>();
+            CreateMap<Service, ServiceDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
 
             CreateMap<Schedule, ScheduleDto>()
-                .ForMember(dest => dest.DateOfWeekName, opt => opt.MapFrom(src => src.DateOfWeek.Name));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.DateOfWeekId, opt => opt.MapFrom(src => src.DateOfWeekId))
+                .ForMember(dest => dest.DateOfWeekName, opt => opt.MapFrom(src => src.DateOfWeek.Name))
+                .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime))
+                .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime));
         }
     }
 }

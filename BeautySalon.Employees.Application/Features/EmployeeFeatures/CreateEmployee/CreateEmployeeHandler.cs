@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BeautySalon.Booking.Infrastructure.Rabbitmq;
+using BeautySalon.Contracts.Employees;
 using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
@@ -12,11 +14,13 @@ namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmpl
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IServiceRepository _serviceRepository;
         private readonly IMapper _mapper;
+        private readonly IEventBus _eventBus;
 
-        public CreateEmployeeHandler(IEmployeeRepository employeeRepository, IMapper mapper, IServiceRepository serviceRepository)
+        public CreateEmployeeHandler(IEmployeeRepository employeeRepository, IMapper mapper, IServiceRepository serviceRepository, IEventBus eventBus)
         {
             _employeeRepository = employeeRepository;
             _serviceRepository = serviceRepository;
+            _eventBus = eventBus;
             _mapper = mapper;
         }
 
@@ -34,6 +38,16 @@ namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmpl
             await _employeeRepository.CreateAsync(employee);
             await _employeeRepository.SaveChangesAsync();
 
+            await _eventBus.SendMessageAsync(new EmployeeCreatedEvent
+            {
+                Id = employee.Id,
+                Name = employee.Name.First + " " + employee.Name.Last,
+                Email = employee.Email.Value,
+                Phone = employee.Phone.Value,
+                IsActive = employee.IsActive,
+                ServiceIds = employee.Schedules.Select(s => s.Id).ToList()
+            }, cancellationToken);
+            
             return _mapper.Map<EmployeeDto>(employee);
         }
     }
