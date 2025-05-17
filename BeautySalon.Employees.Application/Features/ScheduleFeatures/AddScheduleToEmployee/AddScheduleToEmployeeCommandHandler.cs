@@ -5,6 +5,7 @@ using BeautySalon.Employees.Application.Features.AddScheduleToEmployee;
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Domain.Enum;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace BeautySalon.Employees.Application.Features.ScheduleFeatures.AddScheduleToEmployee;
 
@@ -12,9 +13,10 @@ public class AddScheduleToEmployeeCommandHandler : IRequestHandler<AddScheduleTo
 {
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IMapper _mapper;
-    public AddScheduleToEmployeeCommandHandler(IEmployeeRepository employeeRepository)
+    public AddScheduleToEmployeeCommandHandler(IEmployeeRepository employeeRepository, IMapper mapper)
     {
         _employeeRepository = employeeRepository;
+        _mapper = mapper;
     }
 
     public async Task<EmployeeDto> Handle(AddScheduleToEmployeeCommand request, CancellationToken cancellationToken)
