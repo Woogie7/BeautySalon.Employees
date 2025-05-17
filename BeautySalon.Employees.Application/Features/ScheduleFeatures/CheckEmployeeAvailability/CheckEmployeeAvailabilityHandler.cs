@@ -23,7 +23,7 @@ public class CheckEmployeeAvailabilityHandler : IRequestHandler<CheckEmployeeAva
         var dayOfWeek = Domain.SeedWork.Enumeration.FromDisplayName<CustomDateOfWeek>(request.DayOfWeek);
         
         if (dayOfWeek == null)
-            throw new NotFoundException("Day of week not found");
+            throw new NotFoundException("Day of week not foasdnd");
         
         return !employee.Schedules.Any(s =>
             s.DateOfWeek == dayOfWeek &&
