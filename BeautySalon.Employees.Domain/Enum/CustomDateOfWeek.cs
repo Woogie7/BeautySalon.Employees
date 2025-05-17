@@ -4,7 +4,7 @@ namespace BeautySalon.Employees.Domain.Enum
 {
     public class CustomDateOfWeek : Enumeration
     {
-        public static readonly CustomDateOfWeek Processing = new (1, nameof(Processing));
+        public static readonly CustomDateOfWeek Monday = new (1, nameof(Monday));
         public static readonly CustomDateOfWeek Tuesday  = new (2, nameof(Tuesday));
         public static readonly CustomDateOfWeek Wednesday  = new (3, nameof(Wednesday));
         public static readonly CustomDateOfWeek Thursday   = new (4, nameof(Thursday  ));
