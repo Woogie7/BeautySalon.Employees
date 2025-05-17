@@ -1,17 +1,14 @@
 ﻿using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace BeautySalon.Employees.Persistence.Repository
 {
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly EmployeeDBContext _dbContext;
+        private readonly ILogger<EmployeeRepository> _logger;
         public EmployeeRepository(EmployeeDBContext dbContext)
         {
             _dbContext = dbContext;
@@ -60,9 +57,12 @@ namespace BeautySalon.Employees.Persistence.Repository
         
         public async Task<IEnumerable<Employee>> GetAllAsync()
         {
+            _logger.LogInformation("Getting all employees");
             return await _dbContext.Employees
                 .Include(e => e.Skills)
+                    .ThenInclude(s => s.Service)
                 .Include(e => e.Schedules)
+                .AsSplitQuery()
                 .ToListAsync();
         }
 

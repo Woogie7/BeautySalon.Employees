@@ -1,6 +1,7 @@
 using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
+using BeautySalon.Employees.Domain.Enum;
 using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.UpdateEmployee;

@@ -1,5 +1,6 @@
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Domain.Enum;
+using BeautySalon.Employees.Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,14 +12,5 @@ public class CustomDateOfWeekConfiguration : IEntityTypeConfiguration<CustomDate
     {
         builder.HasKey(d => d.Id);
         builder.Property(d => d.Name).IsRequired().HasMaxLength(50);
-        
-        var dateOfWeek = Enum.GetValues<CustomDateOfWeekEnum>()
-            .Select(r => new CustomDateOfWeek
-            {
-                Id = (int)r,
-                Name = r.ToString()
-            });
-
-        builder.HasData(dateOfWeek);
     }
 }

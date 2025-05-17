@@ -7,7 +7,7 @@ public record UpdateScheduleForEmployeeCommand : IRequest<Employee>
 {
     public Guid EmployeeId { get; set; }
     public Guid ScheduleId { get; set; }
-    public DayOfWeek DayOfWeek { get; set; }
+    public string DayOfWeek { get; set; }
     public TimeSpan StartTime { get; set; }
     public TimeSpan EndTime { get; set; }
 }

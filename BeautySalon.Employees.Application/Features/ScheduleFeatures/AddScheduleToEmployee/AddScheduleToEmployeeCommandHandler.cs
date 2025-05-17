@@ -1,6 +1,7 @@
 using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Application.Features.AddScheduleToEmployee;
 using BeautySalon.Employees.Domain;
+using BeautySalon.Employees.Domain.Enum;
 using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.ScheduleFeatures.AddScheduleToEmployee;
@@ -20,10 +21,15 @@ public class AddScheduleToEmployeeCommandHandler : IRequestHandler<AddScheduleTo
 
         if (employee == null)
             throw new NotFoundException(nameof(Employee), request.EmployeeId);
-
+        
+        var dayOfWeek = Domain.SeedWork.Enumeration.FromDisplayName<CustomDateOfWeek>(request.DayOfWeek);
+        
+        if (dayOfWeek == null)
+            throw new NotFoundException("Day of week not found");
+        
         var schedule = Schedule.Create(
             Guid.NewGuid(),
-            request.DayOfWeek,
+            dayOfWeek,
             request.StartTime,
             request.EndTime
         );

@@ -1,5 +1,6 @@
 using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
+using BeautySalon.Employees.Domain.Enum;
 using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.ScheduleFeatures.CheckEmployeeAvailability;
@@ -19,8 +20,13 @@ public class CheckEmployeeAvailabilityHandler : IRequestHandler<CheckEmployeeAva
         if (employee == null)
             throw new NotFoundException(nameof(Employee), request.EmployeeId);
 
+        var dayOfWeek = Domain.SeedWork.Enumeration.FromDisplayName<CustomDateOfWeek>(request.DayOfWeek);
+        
+        if (dayOfWeek == null)
+            throw new NotFoundException("Day of week not found");
+        
         return !employee.Schedules.Any(s =>
-            s.DateOfWeek == new CustomDateOfWeek { Id = (int)request.DayOfWeek, Name = request.DayOfWeek.ToString() } &&
+            s.DateOfWeek == dayOfWeek &&
             s.OverlapsWith(request.StartTime, request.EndTime));
     }
 }

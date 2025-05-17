@@ -1,3 +1,4 @@
+using BeautySalon.Employees.Application.DTO.Schedule;
 using BeautySalon.Employees.Application.Features.AddScheduleToEmployee;
 using BeautySalon.Employees.Application.Features.ScheduleFeatures.CheckEmployeeAvailability;
 using BeautySalon.Employees.Application.Features.ScheduleFeatures.RemoveScheduleFromEmployee;
@@ -12,10 +13,14 @@ public static class ScheduleEndpoints
     {
         var group = app.MapGroup("/api/employees/{employeeId:guid}/schedules");
 
-        group.MapPost("/", async (Guid employeeId, AddScheduleToEmployeeCommand command, ISender mediator) =>
+        group.MapPost("/", async (Guid employeeId, AddScheduleRequest request, ISender mediator) =>
         {
-            if (employeeId != command.EmployeeId)
-                return Results.BadRequest("Employee ID mismatch");
+            var command = new AddScheduleToEmployeeCommand(
+                employeeId,
+                request.DayOfWeek,
+                request.StartTime,
+                request.EndTime
+            );
 
             var employee = await mediator.Send(command);
             return Results.Ok(employee);
@@ -58,7 +63,7 @@ public static class ScheduleEndpoints
     }
 
     public record CheckAvailabilityRequest(
-        DayOfWeek DayOfWeek,
+        string DayOfWeek,
         TimeSpan StartTime,
         TimeSpan EndTime
     );

@@ -1,4 +1,6 @@
 using BeautySalon.Employees.Domain;
+using BeautySalon.Employees.Domain.Enum;
+using BeautySalon.Employees.Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,10 +17,13 @@ public class ScheduleConfiguration : IEntityTypeConfiguration<Schedule>
         builder.Property(s => s.EndTime).IsRequired();
         builder.Property(s => s.IsAvailable).IsRequired();
 
-        builder.HasOne(s => s.DateOfWeek)
-            .WithMany(d => d.Schedules)
-            .HasForeignKey(s => s.DateOfWeekId)
-            .OnDelete(DeleteBehavior.Restrict);
+        builder
+            .Property(b => b.DateOfWeek)
+            .HasConversion(
+                v => v.Name,
+                v => Enumeration.FromDisplayName<CustomDateOfWeek>(v)
+            )
+            .IsRequired();
 
         builder.HasOne(s => s.Employee)
             .WithMany(e => e.Schedules)

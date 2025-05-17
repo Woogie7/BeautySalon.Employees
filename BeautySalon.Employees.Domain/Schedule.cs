@@ -1,3 +1,4 @@
+using BeautySalon.Employees.Domain.Enum;
 using BeautySalon.Employees.Domain.SeedWork;
 
 namespace BeautySalon.Employees.Domain;

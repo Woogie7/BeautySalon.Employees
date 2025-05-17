@@ -6,7 +6,7 @@ namespace BeautySalon.Employees.Application.Features.AddScheduleToEmployee;
 
 public record AddScheduleToEmployeeCommand(
     Guid EmployeeId,
-    CustomDateOfWeek DayOfWeek,
+    string DayOfWeek,
     TimeSpan StartTime,
     TimeSpan EndTime
 ) : IRequest<Employee>;
