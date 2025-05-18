@@ -58,10 +58,5 @@ public class Schedule : Entity
         {
             EndTime = endTime;
         }
-        
-        if (OverlapsWith(startTime, endTime))
-        {
-            throw new InvalidOperationException("Новое время пересекается с существующим расписанием.");
-        }
     }
 }

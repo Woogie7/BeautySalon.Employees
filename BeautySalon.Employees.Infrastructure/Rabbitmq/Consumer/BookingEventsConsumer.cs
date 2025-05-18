@@ -52,6 +52,7 @@ public class BookingEventsConsumer : IConsumer<BookingSlotReservedEvent>
             throw;
         }
 
+        await _context.Availabilities.AddAsync(availability);
         await _context.SaveChangesAsync();
 
         await _eventBus.SendMessageAsync(new AvailabilityCreatedEvent
