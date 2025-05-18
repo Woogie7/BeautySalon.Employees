@@ -20,7 +20,7 @@ public class RemoveScheduleFromEmployeeHandler : IRequestHandler<RemoveScheduleF
             throw new NotFoundException(nameof(Employee), request.EmployeeId);
 
         employee.RemoveSchedule(request.ScheduleId);
-        await _employeeRepository.UpdateAsync(employee);
+        await _employeeRepository.SaveChangesAsync();
 
         return employee;
     }

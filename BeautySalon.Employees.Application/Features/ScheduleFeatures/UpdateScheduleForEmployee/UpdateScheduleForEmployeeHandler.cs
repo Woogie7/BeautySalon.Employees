@@ -30,7 +30,7 @@ public class UpdateScheduleForEmployeeHandler : IRequestHandler<UpdateScheduleFo
             throw new NotFoundException(nameof(Schedule), request.ScheduleId);
 
         schedule.UpdateSchedule(dayOfWeek, request.StartTime, request.EndTime);
-        await _employeeRepository.UpdateAsync(employee);
+        await _employeeRepository.SaveChangesAsync();
 
         return employee;
     }

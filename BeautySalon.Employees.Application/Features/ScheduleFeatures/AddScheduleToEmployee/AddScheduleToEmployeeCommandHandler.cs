@@ -44,8 +44,6 @@ public class AddScheduleToEmployeeCommandHandler : IRequestHandler<AddScheduleTo
         }
         
         employee.AddSchedule(schedule);
-
-        await _employeeRepository.UpdateAsync(employee);
         await _employeeRepository.SaveChangesAsync();
 
         return _mapper.Map<EmployeeDto>(employee);
