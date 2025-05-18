@@ -8,6 +8,8 @@ namespace BeautySalon.Employees.Domain
     {
         private readonly List<Schedule> _schedules = new();
         private readonly List<Skill> _skills = new();
+        private readonly List<Availability> _availabilities = new();
+
 
         public Guid Id { get; private set; }
         public FullName Name { get; private set; }
@@ -18,6 +20,7 @@ namespace BeautySalon.Employees.Domain
 
         public IReadOnlyCollection<Schedule> Schedules => _schedules.AsReadOnly();
         public IReadOnlyCollection<Skill> Skills => _skills.AsReadOnly();
+        public IReadOnlyCollection<Availability> Availabilities => _availabilities.AsReadOnly();
 
         private Employee()
         {

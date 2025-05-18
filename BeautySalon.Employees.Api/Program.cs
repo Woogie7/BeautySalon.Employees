@@ -4,6 +4,7 @@ using BeautySalon.Employees.Api.Middleware;
 using BeautySalon.Employees.Application;
 using BeautySalon.Employees.Application.Features.ConfirmBooking;
 using BeautySalon.Employees.Infrastructure;
+using BeautySalon.Employees.Infrastructure.Rabbitmq.Consumer;
 using BeautySalon.Employees.Persistence;
 using MassTransit;
 using MediatR;
@@ -34,7 +35,7 @@ builder.Services.AddMassTransit(busConfing =>
 {
     busConfing.SetKebabCaseEndpointNameFormatter();
 
-    //busConfing.AddConsumer<>();
+    busConfing.AddConsumer<BookingEventsConsumer>();
 
     busConfing.UsingRabbitMq((context, configurator) =>
     {

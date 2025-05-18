@@ -7,8 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="BeautySalon.Contracts" Version="1.0.6" />
       <PackageReference Include="MassTransit.Abstractions" Version="8.4.1-develop.2291" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BeautySalon.Employees.Persistence\BeautySalon.Employees.Persistence.csproj" />
     </ItemGroup>
 
 </Project>
