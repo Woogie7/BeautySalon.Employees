@@ -18,6 +18,7 @@ namespace BeautySalon.Employees.Persistence
             });
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IServiceRepository, ServiceRepository>();
+            services.AddScoped<IScheduleRepository, ScheduleRepository>();
 
             return services;
         }
