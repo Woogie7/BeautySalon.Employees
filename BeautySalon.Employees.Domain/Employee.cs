@@ -1,4 +1,5 @@
-﻿using BeautySalon.Employees.Domain.SeedWork;
+﻿using BeautySalon.Employees.Domain.Enum;
+using BeautySalon.Employees.Domain.SeedWork;
 using BeautySalon.Employees.Domain.ValueObjects;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -82,46 +83,49 @@ namespace BeautySalon.Employees.Domain
 
         public bool IsAvailableForBooking(DateTime startTime, DateTime endTime)
         {
+            var dayOfWeek = startTime.DayOfWeek;
             var start = startTime.TimeOfDay;
             var end = endTime.TimeOfDay;
 
-            foreach (var schedule in Schedules)
-            {
-                if (schedule.IsAvailable && schedule.OverlapsWith(start, end))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return _schedules.Any(schedule =>
+                schedule.DateOfWeek == Enumeration.FromDisplayName<CustomDateOfWeek>(dayOfWeek.ToString()) &&
+                schedule.IsAvailable &&
+                schedule.Contains(start, end));
         }
+
 
         public void BookTime(DateTime startTime, DateTime endTime)
         {
-            if (IsAvailableForBooking(startTime, endTime))
-            {
-                foreach (var schedule in Schedules)
-                {
-                    if (schedule.OverlapsWith(startTime.TimeOfDay, endTime.TimeOfDay))
-                    {
-                        schedule.MarkUnavailable();
-                    }
-                }
-            }
-            else
-            {
-                throw new InvalidOperationException("Employee is not available at the selected time.");
-            }
+            var dayOfWeek = startTime.DayOfWeek;
+            var start = startTime.TimeOfDay;
+            var end = endTime.TimeOfDay;
+
+            var schedule = _schedules.FirstOrDefault(s =>
+                s.DateOfWeek == Enumeration.FromDisplayName<CustomDateOfWeek>(dayOfWeek.ToString()) &&
+                s.Contains(start, end) &&
+                s.IsAvailable);
+
+            if (schedule == null)
+                throw new InvalidOperationException("No available schedule found for this time.");
+
+            schedule.MarkUnavailable();
         }
+
 
         public void CancelBooking(DateTime startTime, DateTime endTime)
         {
-            foreach (var schedule in Schedules)
+            var dayOfWeek = startTime.DayOfWeek;
+            var start = startTime.TimeOfDay;
+            var end = endTime.TimeOfDay;
+
+            var schedule = _schedules.FirstOrDefault(s =>
+                s.DateOfWeek == Enumeration.FromDisplayName<CustomDateOfWeek>(dayOfWeek.ToString()) &&
+                s.Contains(start, end) &&
+                !s.IsAvailable);
+
+            if (schedule != null)
             {
-                if (schedule.OverlapsWith(startTime.TimeOfDay, endTime.TimeOfDay))
-                {
-                    schedule.MarkAvailable();
-                }
+                schedule.MarkAvailable();
             }
         }
 

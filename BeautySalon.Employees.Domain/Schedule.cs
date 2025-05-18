@@ -59,4 +59,10 @@ public class Schedule : Entity
             EndTime = endTime;
         }
     }
+    
+    public bool Contains(TimeSpan start, TimeSpan end)
+    {
+        return StartTime <= start && EndTime >= end;
+    }
+
 }

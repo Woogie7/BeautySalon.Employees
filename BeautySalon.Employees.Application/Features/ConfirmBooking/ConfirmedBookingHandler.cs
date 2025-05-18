@@ -44,7 +44,7 @@ namespace BeautySalon.Employees.Application.Features.ConfirmBooking
             }
 
             await _repository.SaveChangesAsync();
-            
+
             await _eventBus.SendMessageAsync(new BookingStatusChangedEvent
             {
                 IdBooking = request.Id,
@@ -52,7 +52,6 @@ namespace BeautySalon.Employees.Application.Features.ConfirmBooking
                 StartTime = request.StartTime,
                 Duration = request.Duration
             }, cancellationToken);
-
         }
     }
 }
