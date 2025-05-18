@@ -60,6 +60,7 @@ namespace BeautySalon.Employees.Persistence.Repository
         {
             _logger.LogInformation("Getting all employees");
             return await _dbContext.Employees
+                .Where(e => e.IsActive)
                 .Include(e => e.Skills)
                     .ThenInclude(s => s.Service)
                 .Include(e => e.Schedules)
@@ -70,6 +71,7 @@ namespace BeautySalon.Employees.Persistence.Repository
         public async Task<Employee> GetByIdAsync(Guid id)
         {
             return await _dbContext.Employees
+                .Where(e => e.IsActive)
                 .Include(e => e.Skills)
                 .Include(e => e.Schedules)
                 .FirstOrDefaultAsync(e => e.Id == id);

@@ -26,6 +26,7 @@ public sealed class DeleteEmployeeHandler : IRequestHandler<DeleteEmployeeComman
         var employee = await _repository.GetByIdWithSchedulesAsync(request.Id);
         if (employee == null)
             throw new NotFoundException("Сотрудник не найден");
+        
         employee.Deactivate();
         
         employee.MarkAllSchedulesUnavailable();
