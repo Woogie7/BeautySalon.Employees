@@ -11,6 +11,12 @@ public static class ServiceEndpoints
     {
         var group = app.MapGroup("/services");
 
+        group.MapGet("/", async (ISender mediator) =>
+        {
+            var allServices = await mediator.Send(new GetAllServicesQuery());
+            return Results.Ok(allServices);
+        });
+        
         group.MapPost("/", async (CreateServiceCommand command, ISender mediator) =>
         {
             var id = await mediator.Send(command);

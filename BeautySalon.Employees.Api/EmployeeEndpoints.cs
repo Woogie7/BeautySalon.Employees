@@ -57,12 +57,6 @@ public static class EmployeeEndpoints
             return employee is not null ? Results.Ok(employee) : Results.NotFound();
         });
         
-        employees.MapGet("/", async (GetAllEmployeesQuery query, IMediator mediator) =>
-        {
-            var employee = await mediator.Send(query);
-            return Results.Ok(employee);
-        });
-        
         employees.MapGet("/", async (ISender mediator) =>
         {
             var allEmployees = await mediator.Send(new GetAllEmployeesQuery());
