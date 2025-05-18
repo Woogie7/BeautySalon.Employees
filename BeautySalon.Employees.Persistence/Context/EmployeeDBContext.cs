@@ -9,7 +9,6 @@ namespace BeautySalon.Employees.Persistence.Context
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<Skill> Skills { get; set; }
-        public DbSet<Availability> Availabilities { get; set; }
         public DbSet<CustomDateOfWeek> CustomDateOfWeeks { get; set; }
         public DbSet<Service> Services { get; set; }
 

@@ -19,7 +19,7 @@ public class SkillConfiguration : IEntityTypeConfiguration<Skill>
         builder.HasOne(s => s.Service)
             .WithMany()
             .HasForeignKey(s => s.ServiceId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
 }
