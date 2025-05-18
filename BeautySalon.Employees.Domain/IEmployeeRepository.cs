@@ -14,7 +14,7 @@ namespace BeautySalon.Employees.Domain
         Task<Service> GetServiceByIdAsync(Guid id);
         Task CreateAsync(Employee employee);
         Task CreateServiceAsync(Service service);
-        Task UpdateAsync(Employee employee);
+        //Task UpdateAsync(Employee employee);
         Task DeleteAsync(Guid id);
         Task<Employee?> GetByIdWithSchedulesAsync(Guid employeeId);
         Task<IEnumerable<Employee>> GetByServiceIdAsync(Guid serviceId);

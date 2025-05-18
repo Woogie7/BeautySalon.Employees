@@ -84,10 +84,10 @@ namespace BeautySalon.Employees.Persistence.Repository
             return await _dbContext.SaveChangesAsync() >= 0;
         }
 
-        public Task UpdateAsync(Employee employee)
-        {
-            _dbContext.Employees.Update(employee);
-            return Task.CompletedTask;
-        }
+        // public Task UpdateAsync(Employee employee)
+        // {
+        //     _dbContext.Employees.Update(employee);
+        //     return Task.CompletedTask;
+        // }
     }
 }
