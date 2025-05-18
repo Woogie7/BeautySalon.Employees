@@ -73,6 +73,7 @@ namespace BeautySalon.Employees.Persistence.Repository
             return await _dbContext.Employees
                 .Where(e => e.IsActive)
                 .Include(e => e.Skills)
+                    .ThenInclude(s => s.Service)
                 .Include(e => e.Schedules)
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
