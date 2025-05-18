@@ -38,15 +38,17 @@ namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmpl
             await _employeeRepository.CreateAsync(employee);
             await _employeeRepository.SaveChangesAsync();
 
+            var employeeWithServices = await _employeeRepository.GetByIdAsync(employee.Id);
+            
             await _eventBus.SendMessageAsync(new EmployeeCreatedEvent
             {
-                Id = employee.Id,
-                Name = employee.Name.First + " " + employee.Name.Last,
-                Email = employee.Email.Value,
-                Phone = employee.Phone.Value,
-                IsActive = employee.IsActive,
-                ServiceIds = employee.Skills.Select(s => s.ServiceId).ToList(),
-                Schedule = employee.Schedules.Select(s => new BeautySalon.Contracts.Employees.ScheduleDto()
+                Id = employeeWithServices.Id,
+                Name = employeeWithServices.Name.First + " " + employeeWithServices.Name.Last,
+                Email = employeeWithServices.Email.Value,
+                Phone = employeeWithServices.Phone.Value,
+                IsActive = employeeWithServices.IsActive,
+                ServiceIds = employeeWithServices.Skills.Select(s => s.ServiceId).ToList(),
+                Schedule = employeeWithServices.Schedules.Select(s => new BeautySalon.Contracts.Employees.ScheduleDto()
                 {
                     DayOfWeek = s.DateOfWeek.Id == 7 ? DayOfWeek.Sunday : (DayOfWeek)s.DateOfWeek.Id,
                     StartTime = s.StartTime,
@@ -54,7 +56,7 @@ namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmpl
                 }).ToList()
             }, cancellationToken);
             
-            return _mapper.Map<EmployeeDto>(employee);
+            return _mapper.Map<EmployeeDto>(employeeWithServices);
         }
     }
 }
