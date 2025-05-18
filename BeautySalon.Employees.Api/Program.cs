@@ -1,5 +1,6 @@
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Employees.Api;
+using BeautySalon.Employees.Api.Middleware;
 using BeautySalon.Employees.Application;
 using BeautySalon.Employees.Application.Features.ConfirmBooking;
 using BeautySalon.Employees.Infrastructure;
@@ -66,7 +67,7 @@ if (app.Environment.IsDevelopment())
 
 await app.MigrateDbAsync();
 
-app.UseExceptionHandler();
+app.UseExceptionHandling();
 
 app.MapServiceEndpoints();
 app.MapScheduleEndpoints();
