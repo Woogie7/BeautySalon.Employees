@@ -45,7 +45,13 @@ namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmpl
                 Email = employee.Email.Value,
                 Phone = employee.Phone.Value,
                 IsActive = employee.IsActive,
-                ServiceIds = employee.Schedules.Select(s => s.Id).ToList()
+                ServiceIds = employee.Skills.Select(s => s.ServiceId).ToList(),
+                Schedule = employee.Schedules.Select(s => new BeautySalon.Contracts.Employees.ScheduleDto()
+                {
+                    DayOfWeek = s.DateOfWeek.Id == 7 ? DayOfWeek.Sunday : (DayOfWeek)s.DateOfWeek.Id,
+                    StartTime = s.StartTime,
+                    EndTime = s.EndTime
+                }).ToList()
             }, cancellationToken);
             
             return _mapper.Map<EmployeeDto>(employee);
