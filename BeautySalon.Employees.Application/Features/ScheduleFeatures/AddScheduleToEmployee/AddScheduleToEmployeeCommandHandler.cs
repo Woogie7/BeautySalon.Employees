@@ -59,27 +59,18 @@ public class AddScheduleToEmployeeCommandHandler : IRequestHandler<AddScheduleTo
 
         _logger.LogInformation("Создан новый Schedule: {ScheduleId} [{DayOfWeek}] {StartTime} - {EndTime}", 
             schedule.Id, dayOfWeek.Name, request.StartTime, request.EndTime);
-
-        var isOverlapping = employee.Schedules.Any(s => s.OverlapsWith(schedule.StartTime, schedule.EndTime));
-        _logger.LogInformation("Наложение расписания: {IsOverlapping}", isOverlapping);
-
-        if (isOverlapping)
-        {
-            _logger.LogWarning("Обнаружено наложение расписаний при добавлении расписания сотруднику {EmployeeId}", employee.Id);
-            throw new InvalidOperationException("The new schedule overlaps with an existing one.");
-        }
+        
 
         employee.AddSchedule(schedule);
         await _scheduleRepository.CreateAsync(schedule);
         await _scheduleRepository.SaveChangesAsync();
-
         
         await _eventBus.SendMessageAsync(new ScheduleAddedEmployeeEvent(
             employee.Id,
             schedule.Id,
             schedule.DateOfWeekId,
-            schedule.StartTime, // TimeSpan
-            schedule.EndTime      // TimeSpan
+            schedule.StartTime, 
+            schedule.EndTime    
         ), cancellationToken);
 
         return _mapper.Map<EmployeeDto>(employee);
