@@ -1,7 +1,8 @@
 using AutoMapper;
+using BeautySalon.Booking.Infrastructure.Rabbitmq;
+using BeautySalon.Contracts.Schedule;
 using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Application.Exceptions;
-using BeautySalon.Employees.Application.Features.AddScheduleToEmployee;
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Domain.Enum;
 using BeautySalon.Employees.Persistence.Repository;
@@ -17,12 +18,14 @@ public class AddScheduleToEmployeeCommandHandler : IRequestHandler<AddScheduleTo
     private readonly IScheduleRepository _scheduleRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<AddScheduleToEmployeeCommandHandler> _logger;
-    public AddScheduleToEmployeeCommandHandler(IEmployeeRepository employeeRepository, IMapper mapper, ILogger<AddScheduleToEmployeeCommandHandler> logger, IScheduleRepository scheduleRepository)
+    private readonly IEventBus _eventBus;
+    public AddScheduleToEmployeeCommandHandler(IEmployeeRepository employeeRepository, IMapper mapper, ILogger<AddScheduleToEmployeeCommandHandler> logger, IScheduleRepository scheduleRepository, IEventBus eventBus)
     {
         _employeeRepository = employeeRepository;
         _mapper = mapper;
         _logger = logger;
         _scheduleRepository = scheduleRepository;
+        _eventBus = eventBus;
     }
 
     public async Task<EmployeeDto> Handle(AddScheduleToEmployeeCommand request, CancellationToken cancellationToken)
@@ -70,6 +73,14 @@ public class AddScheduleToEmployeeCommandHandler : IRequestHandler<AddScheduleTo
         await _scheduleRepository.CreateAsync(schedule);
         await _scheduleRepository.SaveChangesAsync();
 
+        
+        await _eventBus.SendMessageAsync(new ScheduleAddedEmployeeEvent(
+            employee.Id,
+            schedule.Id,
+            schedule.DateOfWeekId,
+            schedule.StartTime, // TimeSpan
+            schedule.EndTime      // TimeSpan
+        ), cancellationToken);
 
         return _mapper.Map<EmployeeDto>(employee);
     }

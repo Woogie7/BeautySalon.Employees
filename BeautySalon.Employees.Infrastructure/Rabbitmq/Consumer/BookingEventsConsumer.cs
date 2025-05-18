@@ -1,8 +1,10 @@
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Contracts;
+using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Persistence.Context;
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace BeautySalon.Employees.Infrastructure.Rabbitmq.Consumer;
@@ -26,16 +28,34 @@ public class BookingEventsConsumer : IConsumer<BookingSlotReservedEvent>
 
         _logger.LogInformation("Получено событие бронирования: BookingId = {BookingId}", message.BookingId);
 
-        var availability = Availability.Create
-        (
+        var employee = await _context.Employees
+            .Include(e => e.Availabilities)
+            .FirstOrDefaultAsync(e => e.Id == message.EmployeeId);
+
+        if (employee == null)
+        {
+            _logger.LogWarning("Сотрудник с ID {EmployeeId} не найден", message.EmployeeId);
+            throw new NotFoundException(nameof(Employee), message.EmployeeId);
+        }
+
+        var availability = Availability.Create(
             message.EmployeeId,
             message.StartTime,
             message.StartTime.Add(message.Duration)
         );
 
-        _context.Availabilities.Add(availability);
+        try
+        {
+            employee.AddAvailability(availability);
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogWarning("Ошибка при добавлении недоступности: {Message}", ex.Message);
+            throw;
+        }
+
         await _context.SaveChangesAsync();
-        
+
         await _eventBus.SendMessageAsync(new AvailabilityCreatedEvent
         {
             EmployeeId = availability.EmployeeId,
@@ -44,7 +64,7 @@ public class BookingEventsConsumer : IConsumer<BookingSlotReservedEvent>
             AvailabilityId = availability.Id
         }, context.CancellationToken);
 
-
         _logger.LogInformation("Занятость сотрудника {EmployeeId} обновлена", message.EmployeeId);
     }
+
 }

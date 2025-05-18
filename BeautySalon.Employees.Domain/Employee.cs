@@ -59,6 +59,26 @@ namespace BeautySalon.Employees.Domain
                 _schedules.Remove(schedule);
             }
         }
+        
+        public void AddAvailability(Availability availability)
+        {
+            if (_availabilities.Any(a =>
+                    a.StartTime < availability.EndTime &&
+                    a.EndTime > availability.StartTime))
+            {
+                throw new InvalidOperationException("Overlapping availability");
+            }
+
+            _availabilities.Add(availability);
+        }
+
+        public void RemoveAvailability(Guid availabilityId)
+        {
+            var availability = _availabilities.FirstOrDefault(a => a.Id == availabilityId);
+            if (availability != null)
+                _availabilities.Remove(availability);
+        }
+
 
         public bool IsAvailableForBooking(DateTime startTime, DateTime endTime)
         {

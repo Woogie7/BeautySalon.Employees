@@ -12,9 +12,26 @@ public class ScheduleRepository : IScheduleRepository
         _context = context;
     }
 
-    public async Task CreateAsync(Schedule service)
+    public async Task<Schedule> GetByIdAsync(Guid id)
     {
-        await _context.Schedules.AddAsync(service);
+        return await _context.Schedules.FindAsync(id);
+    }
+
+    public async Task CreateAsync(Schedule schedule)
+    {
+        await _context.Schedules.AddAsync(schedule);
+    }
+
+    public Task UpdateAsync(Schedule schedule)
+    {
+        _context.Schedules.Update(schedule);
+        return Task.CompletedTask;
+    }
+
+    public Task DeleteAsync(Schedule schedule)
+    {
+        _context.Schedules.Remove(schedule);
+        return Task.CompletedTask;
     }
 
     public async Task SaveChangesAsync()

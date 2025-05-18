@@ -1,5 +1,5 @@
 using BeautySalon.Employees.Application.DTO.Schedule;
-using BeautySalon.Employees.Application.Features.AddScheduleToEmployee;
+using BeautySalon.Employees.Application.Features.ScheduleFeatures.AddScheduleToEmployee;
 using BeautySalon.Employees.Application.Features.ScheduleFeatures.CheckEmployeeAvailability;
 using BeautySalon.Employees.Application.Features.ScheduleFeatures.RemoveScheduleFromEmployee;
 using BeautySalon.Employees.Application.Features.ScheduleFeatures.UpdateScheduleForEmployee;
