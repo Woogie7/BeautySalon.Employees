@@ -62,21 +62,24 @@ namespace BeautySalon.Employees.Persistence.Repository
             return await _dbContext.Employees
                 .Where(e => e.IsActive)
                 .Include(e => e.Skills)
-                    .ThenInclude(s => s.Service)
+                .ThenInclude(s => s.Service)
                 .Include(e => e.Schedules)
                 .AsSplitQuery()
                 .ToListAsync();
         }
 
+
         public async Task<Employee> GetByIdAsync(Guid id)
         {
-            return await _dbContext.Employees
-                .Where(e => e.IsActive)
+            var employee = await _dbContext.Employees
                 .Include(e => e.Skills)
-                    .ThenInclude(s => s.Service)
+                .ThenInclude(s => s.Service)
                 .Include(e => e.Schedules)
                 .FirstOrDefaultAsync(e => e.Id == id);
+
+            return employee?.IsActive == true ? employee : null;
         }
+
 
 
         public async Task<bool> SaveChangesAsync()
