@@ -1,6 +1,5 @@
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Contracts;
-using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Persistence.Context;
 using MassTransit;
@@ -35,7 +34,6 @@ public class BookingEventsConsumer : IConsumer<BookingSlotReservedEvent>
         if (employee == null)
         {
             _logger.LogWarning("Сотрудник с ID {EmployeeId} не найден", message.EmployeeId);
-            throw new NotFoundException(nameof(Employee), message.EmployeeId);
         }
 
         var availability = Availability.Create(
