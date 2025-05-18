@@ -1,5 +1,7 @@
+using AutoMapper;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Contracts.Schedule;
+using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Persistence.Repository;
@@ -7,20 +9,22 @@ using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.ScheduleFeatures.RemoveScheduleFromEmployee;
 
-public class RemoveScheduleFromEmployeeHandler : IRequestHandler<RemoveScheduleFromEmployeeCommand, Employee>
+public class RemoveScheduleFromEmployeeHandler : IRequestHandler<RemoveScheduleFromEmployeeCommand, EmployeeDto>
 {
     private readonly IScheduleRepository _scheduleRepository;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IEventBus _eventBus;
-    
-    public RemoveScheduleFromEmployeeHandler(IScheduleRepository scheduleRepository, IEmployeeRepository employeeRepository, IEventBus eventBus)
+    private readonly IMapper _mapper;
+
+    public RemoveScheduleFromEmployeeHandler(IScheduleRepository scheduleRepository, IEmployeeRepository employeeRepository, IEventBus eventBus, IMapper mapper)
     {
         _employeeRepository = employeeRepository;
         _eventBus = eventBus;
+        _mapper = mapper;
         _scheduleRepository = scheduleRepository;
     }
 
-    public async Task<Employee> Handle(RemoveScheduleFromEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<EmployeeDto> Handle(RemoveScheduleFromEmployeeCommand request, CancellationToken cancellationToken)
     {
         var employee = await _employeeRepository.GetByIdAsync(request.EmployeeId);
         if (employee == null)
@@ -39,7 +43,7 @@ public class RemoveScheduleFromEmployeeHandler : IRequestHandler<RemoveScheduleF
             schedule.Id
         ), cancellationToken);
         
-        return employee;
+        return _mapper.Map<EmployeeDto>(employee);
     }
 
 }

@@ -1,9 +1,10 @@
+using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Domain;
 using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.ScheduleFeatures.UpdateScheduleForEmployee;
 
-public record UpdateScheduleForEmployeeCommand : IRequest<Employee>
+public record UpdateScheduleForEmployeeCommand : IRequest<EmployeeDto>
 {
     public Guid EmployeeId { get; set; }
     public Guid ScheduleId { get; set; }

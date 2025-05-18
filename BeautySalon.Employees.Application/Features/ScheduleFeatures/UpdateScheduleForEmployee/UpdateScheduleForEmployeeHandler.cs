@@ -1,5 +1,7 @@
+using AutoMapper;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Contracts.Schedule;
+using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Domain.Enum;
@@ -8,20 +10,22 @@ using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.ScheduleFeatures.UpdateScheduleForEmployee;
 
-public class UpdateScheduleForEmployeeHandler : IRequestHandler<UpdateScheduleForEmployeeCommand, Employee>
+public class UpdateScheduleForEmployeeHandler : IRequestHandler<UpdateScheduleForEmployeeCommand, EmployeeDto>
 {
     private readonly IScheduleRepository _scheduleRepository;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IEventBus _eventBus;
+    private readonly IMapper _mapper;
 
-    public UpdateScheduleForEmployeeHandler(IScheduleRepository scheduleRepository, IEmployeeRepository employeeRepository, IEventBus eventBus)
+    public UpdateScheduleForEmployeeHandler(IScheduleRepository scheduleRepository, IEmployeeRepository employeeRepository, IEventBus eventBus, IMapper mapper)
     {
         _scheduleRepository = scheduleRepository;
         _employeeRepository = employeeRepository;
         _eventBus = eventBus;
+        _mapper = mapper;
     }
 
-    public async Task<Employee> Handle(UpdateScheduleForEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<EmployeeDto> Handle(UpdateScheduleForEmployeeCommand request, CancellationToken cancellationToken)
     {
         var dayOfWeek = Domain.SeedWork.Enumeration.FromDisplayName<CustomDateOfWeek>(request.DayOfWeek);
         if (dayOfWeek == null)
@@ -61,7 +65,7 @@ public class UpdateScheduleForEmployeeHandler : IRequestHandler<UpdateScheduleFo
             schedule.EndTime
         ));
         
-        return employee;
+        return _mapper.Map<EmployeeDto>(employee);
     }
 
 }
