@@ -36,8 +36,11 @@ public class ServiceRepository : IServiceRepository
     public async Task DeleteAsync(Guid id)
     {
         var service = await _context.Services.FindAsync(id);
+        
         if (service is not null)
         {
+            var skills = await _context.Skills.Where(s => s.ServiceId == service.Id).ToListAsync();
+            _context.Skills.RemoveRange(skills);
             _context.Services.Remove(service);
         }
     }
