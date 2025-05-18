@@ -1,17 +1,13 @@
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Employees.Api;
 using BeautySalon.Employees.Application;
-using BeautySalon.Employees.Application.Features.AddScheduleToEmployee;
 using BeautySalon.Employees.Application.Features.ConfirmBooking;
-using BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmployee;
-using BeautySalon.Employees.Application.Features.EmployeeFeatures.GetAllEmployees;
-using BeautySalon.Employees.Application.Features.ScheduleFeatures.CheckEmployeeAvailability;
-using BeautySalon.Employees.Application.Features.ScheduleFeatures.RemoveScheduleFromEmployee;
 using BeautySalon.Employees.Infrastructure;
 using BeautySalon.Employees.Persistence;
 using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +20,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .MinimumLevel.Information()  
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 builder.Services.AddMassTransit(busConfing =>
 {
@@ -61,6 +65,8 @@ if (app.Environment.IsDevelopment())
 }
 
 await app.MigrateDbAsync();
+
+app.UseExceptionHandler();
 
 app.MapServiceEndpoints();
 app.MapScheduleEndpoints();
