@@ -16,6 +16,13 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .MinimumLevel.Information()  
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 builder.Services.AddEndpointsApiExplorer();
  
@@ -24,6 +31,10 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 
 var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>()!;
+
+Log.Logger.Information("JwtOptions in Employees Service: SecretKey = {SecretKey}, Issuer = {Issuer}, Audience = {Audience}",
+    jwtOptions.SecretKey, jwtOptions.Issuer, jwtOptions.Audience);
+
 var key = Encoding.UTF8.GetBytes(jwtOptions.SecretKey);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -47,13 +58,6 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Client", policy => policy.RequireRole("Client"));
 });
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
-    .MinimumLevel.Information()  
-    .CreateLogger();
-
-builder.Host.UseSerilog();
 
 builder.Services.AddMassTransit(busConfing =>
 {
