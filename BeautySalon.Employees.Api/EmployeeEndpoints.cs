@@ -13,16 +13,14 @@ public static class EmployeeEndpoints
 {
     public static void MapEmployeeEndpoints(this WebApplication app)
     {
-        var employees = app.MapGroup("/employees")
-            .WithTags("Employees")
-            .RequireAuthorization();
+        var employees = app.MapGroup("/employees");
         
         
         employees.MapGet("/", async (ISender mediator) =>
         {
             var allEmployees = await mediator.Send(new GetAllEmployeesQuery());
             return Results.Ok(allEmployees);
-        });
+        }).RequireAuthorization();
         
         employees.MapPost("/", async (CreateEmployeeCommand command, IMediator mediator) =>
         {
