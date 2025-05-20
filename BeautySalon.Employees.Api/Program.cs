@@ -1,3 +1,4 @@
+using System.Text;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Employees.Api;
 using BeautySalon.Employees.Api.Middleware;
@@ -10,18 +11,41 @@ using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-Console.OutputEncoding = System.Text.Encoding.UTF8;
-
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
  
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
+
+var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>()!;
+var key = Encoding.UTF8.GetBytes(jwtOptions.SecretKey);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtOptions.Issuer,
+            ValidAudience = jwtOptions.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Administrator"));
+});
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -65,6 +89,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 await app.MigrateDbAsync();
 
@@ -81,7 +109,6 @@ app.MapPost("/confirmed", async ([FromBody] ConfirmBooked request, [FromServices
     return Results.Ok();
 });
 
-app.UseHttpsRedirection();
 
 app.Run();
 

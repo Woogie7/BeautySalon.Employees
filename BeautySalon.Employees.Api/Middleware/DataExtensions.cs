@@ -1,7 +1,7 @@
 using BeautySalon.Employees.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace BeautySalon.Employees.Api;
+namespace BeautySalon.Employees.Api.Middleware;
 
 public static class DataExtensions
 {

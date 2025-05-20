@@ -13,13 +13,23 @@ public static class EmployeeEndpoints
 {
     public static void MapEmployeeEndpoints(this WebApplication app)
     {
-        var employees = app.MapGroup("/employees");
+        var employees = app.MapGroup("/employees")
+            .WithTags("Employees")
+            .RequireAuthorization();
+        
+        
+        employees.MapGet("/", async (ISender mediator) =>
+        {
+            var allEmployees = await mediator.Send(new GetAllEmployeesQuery());
+            return Results.Ok(allEmployees);
+        });
         
         employees.MapPost("/", async (CreateEmployeeCommand command, IMediator mediator) =>
         {
             var employee = await mediator.Send(command);
             return Results.Created($"/employees/{employee.Id}", employee);
-        });
+        })
+        .RequireAuthorization("AdminOnly");
         
         employees.MapPut("/{id:guid}", async (Guid id, UpdateEmployeeCommand command, IMediator mediator) =>
         {
@@ -57,10 +67,6 @@ public static class EmployeeEndpoints
             return employee is not null ? Results.Ok(employee) : Results.NotFound();
         });
         
-        employees.MapGet("/", async (ISender mediator) =>
-        {
-            var allEmployees = await mediator.Send(new GetAllEmployeesQuery());
-            return Results.Ok(allEmployees);
-        });
+        
     }
 }
