@@ -87,6 +87,14 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
 var app = builder.Build();
 
+app.Use(async (context, next) =>
+{
+    var authHeader = context.Request.Headers["Authorization"].ToString();
+    Log.Information("🛡 Authorization Header: {AuthHeader}", authHeader);
+    await next();
+});
+
+
 app.UseAuthentication();
 app.UseAuthorization();
 
