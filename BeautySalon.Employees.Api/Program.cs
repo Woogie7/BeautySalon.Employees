@@ -83,6 +83,9 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
 var app = builder.Build();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -90,12 +93,23 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
+
 
 await app.MigrateDbAsync();
 
 app.UseExceptionHandling();
+
+
+app.MapGet("/debug", (HttpContext ctx) =>
+{
+    var user = ctx.User;
+    return Results.Ok(new
+    {
+        IsAuthenticated = user.Identity?.IsAuthenticated,
+        Name = user.Identity?.Name,
+        Claims = user.Claims.Select(c => new { c.Type, c.Value })
+    });
+}).RequireAuthorization();
 
 app.MapServiceEndpoints();
 app.MapScheduleEndpoints();
