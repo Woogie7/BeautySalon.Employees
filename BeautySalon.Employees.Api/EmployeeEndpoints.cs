@@ -68,7 +68,7 @@ public static class EmployeeEndpoints
             return employee is not null ? Results.Ok(employee) : Results.NotFound();
         });
         
-        employees.MapPost("/employees/{employeeId:guid}/services/{serviceId:guid}", async (Guid employeeId, Guid serviceId, ISender mediator) =>
+        employees.MapPost("/{employeeId:guid}/services/{serviceId:guid}", async (Guid employeeId, Guid serviceId, ISender mediator) =>
         {
             await mediator.Send(new AddServiceToEmployeeCommand(employeeId, serviceId));
             return Results.Ok();
