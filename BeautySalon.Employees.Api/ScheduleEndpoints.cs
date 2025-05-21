@@ -11,7 +11,7 @@ public static class ScheduleEndpoints
 {
     public static IEndpointRouteBuilder MapScheduleEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/employees/{employeeId:guid}/schedules");
+        var group = app.MapGroup("/api/employees/{employeeId:guid}/schedules").RequireAuthorization("EmployeeOnly");
 
         group.MapPost("/", async (Guid employeeId, AddScheduleRequest request, ISender mediator) =>
         {

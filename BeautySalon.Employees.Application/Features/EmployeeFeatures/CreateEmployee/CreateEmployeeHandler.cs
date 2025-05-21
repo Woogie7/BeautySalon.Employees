@@ -26,7 +26,7 @@ namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmpl
 
         public async Task<EmployeeDto> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var employee = _mapper.Map<Employee>(request);
+            /*var employee = _mapper.Map<Employee>(request);
             
             foreach (var serviceId in request.ServiceIds)
             {
@@ -56,7 +56,8 @@ namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.CreateEmpl
                 }).ToList()
             }, cancellationToken);
             
-            return _mapper.Map<EmployeeDto>(employeeWithServices);
+            return _mapper.Map<EmployeeDto>(employeeWithServices);*/
+            return null;
         }
     }
 }

@@ -74,6 +74,43 @@ namespace BeautySalon.Employees.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CustomDateOfWeeks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Monday"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Tuesday"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Wednesday"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Thursday"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Friday"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Saturday"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Sunday"
+                        });
                 });
 
             modelBuilder.Entity("BeautySalon.Employees.Domain.Schedule", b =>

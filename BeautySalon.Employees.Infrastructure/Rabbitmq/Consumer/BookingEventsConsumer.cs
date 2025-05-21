@@ -34,6 +34,7 @@ public class BookingEventsConsumer : IConsumer<BookingSlotReservedEvent>
         if (employee == null)
         {
             _logger.LogWarning("Сотрудник с ID {EmployeeId} не найден", message.EmployeeId);
+            return;
         }
 
         var availability = Availability.Create(

@@ -73,12 +73,17 @@ namespace BeautySalon.Employees.Domain
             _availabilities.Add(availability);
         }
 
-        public void RemoveAvailability(Guid availabilityId)
+        public Availability? RemoveAvailability(DateTime startTime, TimeSpan duration)
         {
-            var availability = _availabilities.FirstOrDefault(a => a.Id == availabilityId);
+            var availability = _availabilities.FirstOrDefault(a => a.StartTime == startTime && a.EndTime == startTime + duration);
             if (availability != null)
+            {
                 _availabilities.Remove(availability);
+            }
+            return availability;
         }
+
+
 
 
         public bool IsAvailableForBooking(DateTime startTime, DateTime endTime)

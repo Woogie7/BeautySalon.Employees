@@ -13,21 +13,21 @@ public static class EmployeeEndpoints
 {
     public static void MapEmployeeEndpoints(this WebApplication app)
     {
-        var employees = app.MapGroup("/employees");
-        
-        
+        var employees = app.MapGroup("/employees").RequireAuthorization();
+
+
         employees.MapGet("/", async (ISender mediator) =>
         {
             var allEmployees = await mediator.Send(new GetAllEmployeesQuery());
             return Results.Ok(allEmployees);
-        }).RequireAuthorization();
+        });
         
-        employees.MapPost("/", async (CreateEmployeeCommand command, IMediator mediator) =>
-        {
-            var employee = await mediator.Send(command);
-            return Results.Created($"/employees/{employee.Id}", employee);
-        })
-        .RequireAuthorization("AdminOnly");
+        // employees.MapPost("/", async (CreateEmployeeCommand command, IMediator mediator) =>
+        // {
+        //     var employee = await mediator.Send(command);
+        //     return Results.Created($"/employees/{employee.Id}", employee);
+        // })
+        // .RequireAuthorization("AdminOnly");
         
         employees.MapPut("/{id:guid}", async (Guid id, UpdateEmployeeCommand command, IMediator mediator) =>
         {
@@ -36,7 +36,8 @@ public static class EmployeeEndpoints
 
             var updatedEmployee = await mediator.Send(command);
             return Results.Ok(updatedEmployee);
-        });
+        })
+        .RequireAuthorization("AdminOnly");
         
         employees.MapDelete("/{id:guid}", async (Guid id, IMediator mediator) =>
         {
@@ -45,7 +46,8 @@ public static class EmployeeEndpoints
                 return Results.NotFound();
 
             return Results.Ok(deletedEmployee);
-        });
+        })
+        .RequireAuthorization("AdminOnly");
         
         employees.MapGet("/{id:guid}/schedule", async (Guid id, IMediator mediator) =>
         {

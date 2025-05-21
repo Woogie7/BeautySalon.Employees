@@ -21,7 +21,7 @@ public static class ServiceEndpoints
         {
             var id = await mediator.Send(command);
             return Results.Created($"/api/services/{id}", id);
-        });
+        }).RequireAuthorization("AdminOnly");
 
         group.MapPut("/{id:guid}", async (Guid id, UpdateServiceCommand command, ISender mediator) =>
         {
@@ -30,19 +30,19 @@ public static class ServiceEndpoints
 
             await mediator.Send(command);
             return Results.NoContent();
-        });
+        }).RequireAuthorization("AdminOnly");
 
         group.MapDelete("/{id:guid}", async (Guid id, ISender mediator) =>
         {
             await mediator.Send(new DeleteServiceCommand(id));
             return Results.NoContent();
-        });
+        }).RequireAuthorization("AdminOnly");
 
         group.MapPost("/AddServiceToEmployee", async ([AsParameters]Guid emploeeId, [AsParameters]Guid serviceId, ISender mediator) =>
         {
             await mediator.Send(new AddServiceToEmployeeCommand(emploeeId, serviceId));
             return Results.Ok();
-        }); 
+        }).RequireAuthorization("AdminOnly");
         
         return app;
     }

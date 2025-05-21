@@ -55,8 +55,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Client", policy => policy.RequireRole("Client"));
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("Admin"));
+        
+    options.AddPolicy("EmployeeOnly", policy =>
+        policy.RequireRole("Employee"));
+        
+    options.AddPolicy("ClientOnly", policy =>
+        policy.RequireRole("Client"));
 });
+
 
 
 builder.Services.AddMassTransit(busConfing =>
@@ -64,6 +72,8 @@ builder.Services.AddMassTransit(busConfing =>
     busConfing.SetKebabCaseEndpointNameFormatter();
 
     busConfing.AddConsumer<BookingEventsConsumer>();
+    busConfing.AddConsumer<BookingCancelledConsumer>();
+    busConfing.AddConsumer<EmployeeCreatedConsumer>();
 
     busConfing.UsingRabbitMq((context, configurator) =>
     {
@@ -86,14 +96,6 @@ builder.Services.AddStackExchangeRedisCache(options =>
 });
 
 var app = builder.Build();
-
-app.Use(async (context, next) =>
-{
-    var authHeader = context.Request.Headers["Authorization"].ToString();
-    Log.Information("🛡 Authorization Header: {AuthHeader}", authHeader);
-    await next();
-});
-
 
 app.UseAuthentication();
 app.UseAuthorization();

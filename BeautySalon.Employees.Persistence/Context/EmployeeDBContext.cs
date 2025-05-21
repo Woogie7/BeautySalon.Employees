@@ -1,5 +1,6 @@
 ﻿using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Domain.Enum;
+using BeautySalon.Employees.Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
 
 namespace BeautySalon.Employees.Persistence.Context
@@ -18,6 +19,14 @@ namespace BeautySalon.Employees.Persistence.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeDBContext).Assembly);
+            SeedData(modelBuilder);
+        }
+        
+        private void SeedData(ModelBuilder modelBuilder)
+        {
+            var customDateOfWeeks = Enumeration.GetAll<CustomDateOfWeek>();
+
+            modelBuilder.Entity<CustomDateOfWeek>().HasData(customDateOfWeeks);
         }
     }
 }
