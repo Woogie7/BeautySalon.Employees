@@ -134,7 +134,7 @@ app.MapPost("/confirmed", async ([FromBody] ConfirmBooked request, [FromServices
     await _sender.Send(request);
 
     return Results.Ok();
-});
+}).RequireAuthorization("EmployeeOnly");
 
 
 app.Run();

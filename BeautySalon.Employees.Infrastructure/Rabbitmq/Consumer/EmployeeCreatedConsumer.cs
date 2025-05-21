@@ -1,4 +1,4 @@
-using BeautySalon.Contracts.Employees;
+using BeautySalon.Contracts;
 using BeautySalon.Employees.Domain.ValueObjects;
 using BeautySalon.Employees.Persistence.Context;
 using MassTransit;
@@ -22,18 +22,18 @@ public class EmployeeCreatedConsumer : IConsumer<EmployeeCreatedEvent>
     {
         var message = context.Message;
 
-        _logger.LogInformation("Получено событие создания сотрудника: UserId = {UserId}, Email = {Email}", message.Id, message.Email);
+        _logger.LogInformation("Получено событие создания сотрудника: UserId = {UserId}, Email = {Email}", message.UserId, message.Email);
 
-        var existing = await _context.Employees.AnyAsync(e => e.Id == message.Id);
+        var existing = await _context.Employees.AnyAsync(e => e.Id == message.UserId);
         if (existing)
         {
-            _logger.LogWarning("Сотрудник с UserId {UserId} уже существует", message.Id);
+            _logger.LogWarning("Сотрудник с UserId {UserId} уже существует", message.UserId);
             return;
         }
 
         var employee = Domain.Employee.Create(
-            message.Id,
-            new FullName(message.Name, ""),
+            message.UserId,
+            new FullName(message.FullName, ""),
             new Email(message.Email),
             new PhoneNumber(message.Phone)
             );
