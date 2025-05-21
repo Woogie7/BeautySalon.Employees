@@ -37,7 +37,10 @@ namespace BeautySalon.Employees.Domain
 
         public static Employee Create(Guid id, FullName name, Email email, PhoneNumber phone)
         {
-            return new Employee(id, name, email, phone);
+            return new Employee(id, name, email, phone)
+            {
+                IsActive = true
+            };
         }
 
         public void AddSchedule(Schedule schedule)
