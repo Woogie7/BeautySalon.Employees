@@ -11,7 +11,6 @@ public class UpdateEmployeeCommand : IRequest<Employee>
     public string LastName { get; set; }
     public string Email { get; set; }
     public string Phone { get; set; }
-    public List<ScheduleDto> Schedules { get; set; } // Расписание сотрудника
 
     public UpdateEmployeeCommand(Guid id, string firstName, string lastName, string email, string phone, List<ScheduleDto> schedules)
     {
@@ -20,6 +19,5 @@ public class UpdateEmployeeCommand : IRequest<Employee>
         LastName = lastName;
         Email = email;
         Phone = phone;
-        Schedules = schedules ?? new List<ScheduleDto>();
     }
 }

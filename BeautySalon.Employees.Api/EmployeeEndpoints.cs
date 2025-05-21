@@ -6,7 +6,6 @@ using BeautySalon.Employees.Application.Features.EmployeeFeatures.GetEmployeesBy
 using BeautySalon.Employees.Application.Features.EmployeeFeatures.GetEmployeeSchedule;
 using BeautySalon.Employees.Application.Features.EmployeeFeatures.UpdateEmployee;
 using BeautySalon.Employees.Application.Features.ServiceFeatures.AddServiceToEmployee;
-using BeautySalon.Employees.Application.Features.UpdateEmployee;
 using MediatR;
 
 namespace BeautySalon.Employees.Api;
