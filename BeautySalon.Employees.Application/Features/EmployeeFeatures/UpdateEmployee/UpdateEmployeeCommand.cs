@@ -2,7 +2,7 @@ using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Domain;
 using MediatR;
 
-namespace BeautySalon.Employees.Application.Features.UpdateEmployee;
+namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.UpdateEmployee;
 
 public class UpdateEmployeeCommand : IRequest<Employee>
 {

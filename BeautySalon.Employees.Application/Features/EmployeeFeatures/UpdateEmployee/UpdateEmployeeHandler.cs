@@ -3,6 +3,7 @@ using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Contracts.Employees;
 using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Application.Exceptions;
+using BeautySalon.Employees.Application.Features.EmployeeFeatures.UpdateEmployee;
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Domain.Enum;
 using MediatR;

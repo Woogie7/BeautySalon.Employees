@@ -4,6 +4,7 @@ using BeautySalon.Employees.Application.Features.EmployeeFeatures.GetAllEmployee
 using BeautySalon.Employees.Application.Features.EmployeeFeatures.GetEmployeeById;
 using BeautySalon.Employees.Application.Features.EmployeeFeatures.GetEmployeesByService;
 using BeautySalon.Employees.Application.Features.EmployeeFeatures.GetEmployeeSchedule;
+using BeautySalon.Employees.Application.Features.EmployeeFeatures.UpdateEmployee;
 using BeautySalon.Employees.Application.Features.ServiceFeatures.AddServiceToEmployee;
 using BeautySalon.Employees.Application.Features.UpdateEmployee;
 using MediatR;

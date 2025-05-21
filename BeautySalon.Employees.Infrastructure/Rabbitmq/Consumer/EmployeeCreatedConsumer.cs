@@ -33,7 +33,7 @@ public class EmployeeCreatedConsumer : IConsumer<EmployeeCreatedEvent>
 
         var employee = Domain.Employee.Create(
             message.UserId,
-            new FullName(message.FullName, ""),
+            new FullName(message.FirstName, message.LastName),
             new Email(message.Email),
             new PhoneNumber(message.Phone)
             );
