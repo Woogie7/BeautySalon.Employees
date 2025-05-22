@@ -31,10 +31,9 @@ public class RemoveScheduleFromEmployeeHandler : IRequestHandler<RemoveScheduleF
             throw new NotFoundException(nameof(Employee), request.EmployeeId);
 
         var schedule = await _scheduleRepository.GetByIdAsync(request.ScheduleId);
-        if (schedule == null)
+        if (schedule == null || schedule.EmployeeId != employee.Id)
             throw new NotFoundException(nameof(Schedule), request.ScheduleId);
 
-        employee.RemoveSchedule(schedule.Id);
         await _scheduleRepository.DeleteAsync(schedule);
         await _scheduleRepository.SaveChangesAsync();
 
@@ -42,8 +41,7 @@ public class RemoveScheduleFromEmployeeHandler : IRequestHandler<RemoveScheduleF
             employee.Id,
             schedule.Id
         ), cancellationToken);
-        
+    
         return _mapper.Map<EmployeeDto>(employee);
     }
-
 }
