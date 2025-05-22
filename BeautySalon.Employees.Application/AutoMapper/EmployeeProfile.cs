@@ -28,8 +28,8 @@ namespace BeautySalon.Employees.Application.AutoMapper
 
             CreateMap<Employee, EmployeeDto>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.ToString()))
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.ToString()))
-                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone.ToString()))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.Value))
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone.Value))
                 .ForMember(dest => dest.Services, opt => opt.MapFrom(src => src.Skills.Select(s => s.Service)))
                 .ForMember(dest => dest.Schedules, opt => opt.MapFrom(src => src.Schedules));
 

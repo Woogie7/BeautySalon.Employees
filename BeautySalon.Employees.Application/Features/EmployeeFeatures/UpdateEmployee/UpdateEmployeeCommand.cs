@@ -12,7 +12,7 @@ public class UpdateEmployeeCommand : IRequest<Employee>
     public string Email { get; set; }
     public string Phone { get; set; }
 
-    public UpdateEmployeeCommand(Guid id, string firstName, string lastName, string email, string phone, List<ScheduleDto> schedules)
+    public UpdateEmployeeCommand(Guid id, string firstName, string lastName, string email, string phone)
     {
         Id = id;
         FirstName = firstName;

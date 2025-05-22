@@ -1,5 +1,6 @@
 using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
+using BeautySalon.Employees.Persistence.Context;
 using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.ServiceFeatures.AddServiceToEmployee;
@@ -7,10 +8,12 @@ namespace BeautySalon.Employees.Application.Features.ServiceFeatures.AddServiceT
 public class AddServiceToEmployeeCommandHandler : IRequestHandler<AddServiceToEmployeeCommand>
 {
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly EmployeeDBContext _context;
 
-    public AddServiceToEmployeeCommandHandler(IEmployeeRepository employeeRepository)
+    public AddServiceToEmployeeCommandHandler(IEmployeeRepository employeeRepository, EmployeeDBContext context)
     {
         _employeeRepository = employeeRepository;
+        _context = context;
     }
 
     public async Task Handle(AddServiceToEmployeeCommand request, CancellationToken cancellationToken)
@@ -25,6 +28,10 @@ public class AddServiceToEmployeeCommandHandler : IRequestHandler<AddServiceToEm
 
         employee.AddSkill(service.Id);
 
+        var skill = Skill.Create(employee.Id, service.Id);
+        _context.Skills.Add(skill); 
+        await _context.SaveChangesAsync();
+        
         await _employeeRepository.SaveChangesAsync();
     }
 }
