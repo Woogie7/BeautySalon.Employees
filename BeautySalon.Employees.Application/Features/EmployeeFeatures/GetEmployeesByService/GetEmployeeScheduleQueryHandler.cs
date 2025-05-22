@@ -1,5 +1,6 @@
 using AutoMapper;
 using BeautySalon.Employees.Application.DTO;
+using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
 using MediatR;
 
@@ -19,6 +20,11 @@ public class GetEmployeesByServiceQueryHandler : IRequestHandler<GetEmployeesByS
     public async Task<IEnumerable<EmployeeDto>> Handle(GetEmployeesByServiceQuery request, CancellationToken cancellationToken)
     {
         var employees = await _employeeRepository.GetByServiceIdAsync(request.ServiceId);
+
+        if (employees == null || !employees.Any())
+            throw new NotFoundException($"Не найдено сотрудников с услугой ID: {request.ServiceId}");
+
         return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
     }
+
 }

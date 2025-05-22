@@ -53,8 +53,13 @@ namespace BeautySalon.Employees.Persistence.Repository
 
         public async Task<IEnumerable<Employee>> GetByServiceIdAsync(Guid serviceId)
         {
-            return await _dbContext.Employees.Where(e =>e.Id == serviceId).AsNoTracking().ToListAsync();
+            return await _dbContext.Employees
+                .Include(e => e.Skills)
+                .Where(e => e.Skills.Any(s => s.ServiceId == serviceId))
+                .AsNoTracking()
+                .ToListAsync();
         }
+
         
         public async Task<IEnumerable<Employee>> GetAllAsync()
         {
