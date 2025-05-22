@@ -25,7 +25,7 @@ public static class ServiceEndpoints
 
         group.MapPut("/{id:guid}", async (Guid id, UpdateServiceCommand command, ISender mediator) =>
         {
-            if (id != command.ServiceId)
+            if (id != command.Id)
                 return Results.BadRequest("ID mismatch");
 
             await mediator.Send(command);

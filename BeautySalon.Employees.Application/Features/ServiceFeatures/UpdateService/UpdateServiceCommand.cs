@@ -2,7 +2,7 @@ using MediatR;
 using System;
 
 public record UpdateServiceCommand(
-    Guid ServiceId,
+    Guid Id,
     string Name,
     string Description,
     TimeSpan Duration,

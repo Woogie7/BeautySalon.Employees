@@ -19,7 +19,7 @@ public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand>
 
     public async Task Handle(UpdateServiceCommand request, CancellationToken cancellationToken)
     {
-        var service = await _serviceRepository.GetByIdAsync(request.ServiceId);
+        var service = await _serviceRepository.GetByIdAsync(request.Id);
         if (service is null)
             throw new NotFoundException("Услуга не найдена.");
 
