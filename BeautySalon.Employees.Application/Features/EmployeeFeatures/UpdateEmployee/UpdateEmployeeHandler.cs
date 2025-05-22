@@ -1,13 +1,14 @@
 using AutoMapper;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Contracts.Employees;
+using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
 using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.UpdateEmployee;
 
-public sealed class UpdateEmployeeHandler : IRequestHandler<UpdateEmployeeCommand, Employee>
+public sealed class UpdateEmployeeHandler : IRequestHandler<UpdateEmployeeCommand, EmployeeDto>
 {
     private readonly IEmployeeRepository _repository;
     private readonly IEventBus _eventBus;
@@ -20,7 +21,7 @@ public sealed class UpdateEmployeeHandler : IRequestHandler<UpdateEmployeeComman
         _mapper = mapper;
     }
 
-    public async Task<Employee> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<EmployeeDto> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
     {
         var employee = await _repository.GetByIdAsync(request.Id); // с Include
 
@@ -39,6 +40,6 @@ public sealed class UpdateEmployeeHandler : IRequestHandler<UpdateEmployeeComman
             ServiceIds = employee.Skills.Select(s => s.ServiceId).ToList(),
         }, cancellationToken);
 
-        return employee;
+        return _mapper.Map<EmployeeDto>(employee);
     }
 }

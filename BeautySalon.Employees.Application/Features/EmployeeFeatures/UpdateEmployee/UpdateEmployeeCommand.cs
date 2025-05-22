@@ -4,7 +4,7 @@ using MediatR;
 
 namespace BeautySalon.Employees.Application.Features.EmployeeFeatures.UpdateEmployee;
 
-public class UpdateEmployeeCommand : IRequest<Employee>
+public class UpdateEmployeeCommand : IRequest<EmployeeDto>
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; }
