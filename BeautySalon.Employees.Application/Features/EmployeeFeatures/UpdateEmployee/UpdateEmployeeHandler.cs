@@ -28,6 +28,10 @@ public sealed class UpdateEmployeeHandler : IRequestHandler<UpdateEmployeeComman
         if (employee == null)
             throw new NotFoundException("Сотрудник не найден.");
 
+        employee.UpdateName(request.FirstName, request.LastName);
+        employee.UpdateEmail(request.Email);
+        employee.UpdatePhone(request.Phone);
+        
         await _repository.SaveChangesAsync();
 
         await _eventBus.SendMessageAsync(new EmployeeUpdatedEvent
