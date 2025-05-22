@@ -47,7 +47,7 @@ namespace BeautySalon.Employees.Application.Features.ConfirmBooking
 
             await _eventBus.SendMessageAsync(new BookingStatusChangedEvent
             {
-                IdBooking = request.Id,
+                BookingId = request.Id,
                 Status = request.Status,
                 StartTime = request.StartTime,
                 Duration = request.Duration

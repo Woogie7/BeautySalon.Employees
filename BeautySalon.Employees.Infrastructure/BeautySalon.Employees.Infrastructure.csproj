@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="BeautySalon.Contracts" Version="1.0.8" />
+      <PackageReference Include="BeautySalon.Contracts" Version="1.1.0" />
       <PackageReference Include="MassTransit.Abstractions" Version="8.4.1-develop.2291" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.1" />
     </ItemGroup>
