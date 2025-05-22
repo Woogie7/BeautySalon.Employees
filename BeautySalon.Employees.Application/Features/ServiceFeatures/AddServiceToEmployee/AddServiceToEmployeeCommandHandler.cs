@@ -2,6 +2,7 @@ using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Persistence.Context;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace BeautySalon.Employees.Application.Features.ServiceFeatures.AddServiceToEmployee;
 
@@ -26,12 +27,14 @@ public class AddServiceToEmployeeCommandHandler : IRequestHandler<AddServiceToEm
         if (service is null)
             throw new NotFoundException("Услуга не найдена.");
 
-        employee.AddSkill(service.Id);
+        var alreadyExists = await _context.Skills.AnyAsync(s =>
+            s.EmployeeId == request.EmployeeId && s.ServiceId == request.ServiceId, cancellationToken);
+        if (alreadyExists)
+            throw new BadRequestException("Связь уже существует");
 
         var skill = Skill.Create(employee.Id, service.Id);
-        _context.Skills.Add(skill); 
-        await _context.SaveChangesAsync();
-        
-        await _employeeRepository.SaveChangesAsync();
+
+        _context.Skills.Add(skill);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }
