@@ -1,3 +1,5 @@
+using BeautySalon.Booking.Infrastructure.Rabbitmq;
+using BeautySalon.Contracts.Employees;
 using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Persistence.Context;
@@ -10,11 +12,13 @@ public class AddServiceToEmployeeCommandHandler : IRequestHandler<AddServiceToEm
 {
     private readonly IEmployeeRepository _employeeRepository;
     private readonly EmployeeDBContext _context;
+    private readonly  IEventBus _eventBus;
 
-    public AddServiceToEmployeeCommandHandler(IEmployeeRepository employeeRepository, EmployeeDBContext context)
+    public AddServiceToEmployeeCommandHandler(IEmployeeRepository employeeRepository, EmployeeDBContext context, IEventBus eventBus)
     {
         _employeeRepository = employeeRepository;
         _context = context;
+        _eventBus = eventBus;
     }
 
     public async Task Handle(AddServiceToEmployeeCommand request, CancellationToken cancellationToken)
@@ -36,5 +40,15 @@ public class AddServiceToEmployeeCommandHandler : IRequestHandler<AddServiceToEm
 
         _context.Skills.Add(skill);
         await _context.SaveChangesAsync(cancellationToken);
+        
+        await _eventBus.SendMessageAsync(new EmployeeUpdatedEvent
+        {
+            Id = employee.Id,
+            Name = employee.Name.First + " " + employee.Name.Last,
+            Email = employee.Email.Value,
+            Phone = employee.Phone.Value,
+            IsActive = employee.IsActive,
+            ServiceIds = employee.Skills.Select(s => s.ServiceId).ToList(),
+        }, cancellationToken);
     }
 }

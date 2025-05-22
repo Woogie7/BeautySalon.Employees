@@ -23,7 +23,7 @@ public sealed class UpdateEmployeeHandler : IRequestHandler<UpdateEmployeeComman
 
     public async Task<EmployeeDto> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
     {
-        var employee = await _repository.GetByIdAsync(request.Id); // с Include
+        var employee = await _repository.GetByIdAsync(request.Id); 
 
         if (employee == null)
             throw new NotFoundException("Сотрудник не найден.");
