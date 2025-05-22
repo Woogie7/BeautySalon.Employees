@@ -42,7 +42,7 @@ namespace BeautySalon.Employees.Application.Features.ConfirmBooking
             {
                 employee.CancelBooking(request.StartTime, endTime);
             }
-
+//
             await _repository.SaveChangesAsync();
 
             await _eventBus.SendMessageAsync(new BookingStatusChangedEvent
