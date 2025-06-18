@@ -9,6 +9,18 @@ public class Service : Entity
     public TimeSpan Duration { get; private set; }
     public decimal Price { get; private set; }
 
+    public static Service Create(string name, string description, TimeSpan duration, decimal price)
+    {
+        return new Service(name, description, duration, price);
+    }
+    public void Update(string name, string description, TimeSpan duration, decimal price)
+    {
+        Name = name;
+        Description = description;
+        Duration = duration;
+        Price = price;
+    }
+    
     private Service()
     {
     }
@@ -16,18 +28,6 @@ public class Service : Entity
     private Service(string name, string description, TimeSpan duration, decimal price)
     {
         Id = Guid.NewGuid();
-        Name = name;
-        Description = description;
-        Duration = duration;
-        Price = price;
-    }
-
-    public static Service Create(string name, string description, TimeSpan duration, decimal price)
-    {
-        return new Service(name, description, duration, price);
-    }
-    public void Update(string name, string description, TimeSpan duration, decimal price)
-    {
         Name = name;
         Description = description;
         Duration = duration;

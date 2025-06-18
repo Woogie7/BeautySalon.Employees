@@ -6,13 +6,14 @@ using BeautySalon.Employees.Application.Features.EmployeeFeatures.GetEmployeesBy
 using BeautySalon.Employees.Application.Features.EmployeeFeatures.GetEmployeeSchedule;
 using BeautySalon.Employees.Application.Features.EmployeeFeatures.UpdateEmployee;
 using BeautySalon.Employees.Application.Features.ServiceFeatures.AddServiceToEmployee;
+using FluentValidation;
 using MediatR;
 
 namespace BeautySalon.Employees.Api;
 
 public static class EmployeeEndpoints
 {
-    public static void MapEmployeeEndpoints(this WebApplication app)
+    public static IEndpointRouteBuilder MapEmployeeEndpoints(this IEndpointRouteBuilder app)
     {
         var employees = app.MapGroup("/employees").RequireAuthorization();
 
@@ -23,23 +24,25 @@ public static class EmployeeEndpoints
             return Results.Ok(allEmployees);
         });
         
-        // employees.MapPost("/", async (CreateEmployeeCommand command, IMediator mediator) =>
-        // {
-        //     var employee = await mediator.Send(command);
-        //     return Results.Created($"/employees/{employee.Id}", employee);
-        // })
-        // .RequireAuthorization("AdminOnly");
-        
-        employees.MapPut("/{id:guid}", async (Guid id, UpdateEmployeeCommand command, IMediator mediator) =>
-        {
-            if (id != command.Id)
-                return Results.BadRequest("Id в URL и теле запроса не совпадают");
+        employees.MapPut("/{id:guid}", async (
+                Guid id, 
+                UpdateEmployeeCommand command, 
+                IMediator mediator, 
+                IValidator<UpdateEmployeeCommand> validator) =>
+            {
+                if (id != command.Id)
+                    return Results.BadRequest("Id в URL и теле запроса не совпадают");
 
-            var updatedEmployee = await mediator.Send(command);
-            return Results.Ok(updatedEmployee);
-        })
-        .RequireAuthorization("AdminOnly");
-        
+                var validationResult = await validator.ValidateAsync(command);
+                if (!validationResult.IsValid)
+                    throw new ValidationException(validationResult.Errors);
+
+                var updatedEmployee = await mediator.Send(command);
+                return Results.Ok(updatedEmployee);
+            })
+            .RequireAuthorization("AdminOnly");
+
+        //
         employees.MapDelete("/{id:guid}", async (Guid id, IMediator mediator) =>
         {
             var deletedEmployee = await mediator.Send(new DeleteEmployeeCommand(id));
@@ -73,7 +76,7 @@ public static class EmployeeEndpoints
             await mediator.Send(new AddServiceToEmployeeCommand(employeeId, serviceId));
             return Results.Ok();
         }).RequireAuthorization("EmployeeOnly");
-        
-        
+
+        return app;
     }
 }

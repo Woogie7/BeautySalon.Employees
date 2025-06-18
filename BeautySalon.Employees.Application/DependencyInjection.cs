@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 namespace BeautySalon.Employees.Application
 {
@@ -15,7 +17,11 @@ namespace BeautySalon.Employees.Application
             service.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
             service.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            service.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+            service.AddFluentValidationAutoValidation();
+            
             return service;
+            
         }
     }
 }

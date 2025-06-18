@@ -37,6 +37,10 @@ public class Schedule : Entity
     {
         return !(otherEnd <= StartTime || otherStart >= EndTime);
     }
+    public bool Contains(TimeSpan start, TimeSpan end)
+    {
+        return StartTime <= start && EndTime >= end;
+    }
 
     public void MarkUnavailable() => IsAvailable = false;
     public void MarkAvailable() => IsAvailable = true;
@@ -60,9 +64,6 @@ public class Schedule : Entity
         }
     }
     
-    public bool Contains(TimeSpan start, TimeSpan end)
-    {
-        return StartTime <= start && EndTime >= end;
-    }
+    
 
 }

@@ -1,5 +1,6 @@
 using System.Net;
 using BeautySalon.Employees.Application.Exceptions;
+using FluentValidation;
 
 namespace BeautySalon.Employees.Api.Middleware;
 
@@ -26,6 +27,21 @@ public class ExceptionHandlingMiddleware
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             await context.Response.WriteAsJsonAsync(new { Message = ex.Message });
         }
+        catch (ValidationException ex)
+        {
+            _logger.LogWarning(ex, "Validation error: {Message}", ex.Message);
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+            var errors = ex.Errors
+                .GroupBy(e => e.PropertyName)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(e => e.ErrorMessage).ToArray()
+                );
+
+            await context.Response.WriteAsJsonAsync(new { errors });
+        }
+        
         catch (NotFoundException ex)
         {
             context.Response.StatusCode = StatusCodes.Status404NotFound;
