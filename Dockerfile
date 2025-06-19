@@ -9,10 +9,9 @@ ARG BUILD_CONFIGURATION=Release
 ARG GITHUB_TOKEN
 WORKDIR /src
 
-
 COPY NuGet.Config .
 
-RUN sed -i 's/%GITHUB_TOKEN%/'"$GITHUB_TOKEN"'/g' NuGet.Config
+RUN sed -i 's|%GITHUB_TOKEN%|'"${GITHUB_TOKEN}"'|g' NuGet.Config
 
 COPY . .
 
