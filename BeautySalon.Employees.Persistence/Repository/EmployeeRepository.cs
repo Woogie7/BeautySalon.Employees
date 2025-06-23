@@ -56,6 +56,7 @@ namespace BeautySalon.Employees.Persistence.Repository
             return await _dbContext.Employees
                 .Include(e => e.Skills)
                 .Where(e => e.Skills.Any(s => s.ServiceId == serviceId))
+                .Include(e => e.Availabilities)
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -69,6 +70,7 @@ namespace BeautySalon.Employees.Persistence.Repository
                 .Include(e => e.Skills)
                 .ThenInclude(s => s.Service)
                 .Include(e => e.Schedules)
+                .Include(e => e.Availabilities)
                 .AsSplitQuery()
                 .ToListAsync();
         }
@@ -80,6 +82,7 @@ namespace BeautySalon.Employees.Persistence.Repository
                 .Include(e => e.Skills)
                 .ThenInclude(s => s.Service)
                 .Include(e => e.Schedules)
+                .Include(e => e.Availabilities)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             return employee?.IsActive == true ? employee : null;
