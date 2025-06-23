@@ -104,10 +104,10 @@ namespace BeautySalon.Employees.Domain
 
         public void BookTime(DateTime startTime, DateTime endTime)
         {
-            if (_availabilities == null)
-            {
-                throw new InvalidOperationException("Availabilities collection is not initialized");
-            }
+            // if (_availabilities == null)
+            // {
+            //     throw new InvalidOperationException("Availabilities collection is not initialized");
+            // }
             var dayOfWeek = startTime.DayOfWeek;
             var start = startTime.TimeOfDay;
             var end = endTime.TimeOfDay;
@@ -119,14 +119,14 @@ namespace BeautySalon.Employees.Domain
             if (schedule == null || !schedule.IsAvailable)
                 throw new InvalidOperationException("Employee not working at this time.");
             
-            var availability = _availabilities.FirstOrDefault(a => 
-                a.StartTime == startTime && 
-                a.EndTime == endTime);
-            
-            if (availability == null)
-                throw new InvalidOperationException("Time slot already booked.");
+            // var availability = _availabilities.FirstOrDefault(a => 
+            //     a.StartTime == startTime && 
+            //     a.EndTime == endTime);
+            //
+            // if (availability == null)
+            //     throw new InvalidOperationException("Time slot already booked.");
         
-            _availabilities.Remove(availability);
+            //_availabilities.Remove(availability);
         }
 
 
