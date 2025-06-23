@@ -107,16 +107,22 @@ namespace BeautySalon.Employees.Domain
             var dayOfWeek = startTime.DayOfWeek;
             var start = startTime.TimeOfDay;
             var end = endTime.TimeOfDay;
-
+            
             var schedule = _schedules.FirstOrDefault(s =>
                 s.DateOfWeek == Enumeration.FromDisplayName<CustomDateOfWeek>(dayOfWeek.ToString()) &&
-                s.Contains(start, end) &&
-                s.IsAvailable);
-
-            if (schedule == null)
-                throw new InvalidOperationException("No available schedule found for this time.");
-
-            schedule.MarkUnavailable();
+                s.Contains(start, end));
+                
+            if (schedule == null || !schedule.IsAvailable)
+                throw new InvalidOperationException("Employee not working at this time.");
+            
+            var availability = _availabilities.FirstOrDefault(a => 
+                a.StartTime == startTime && 
+                a.EndTime == endTime);
+            
+            if (availability == null)
+                throw new InvalidOperationException("Time slot already booked.");
+        
+            _availabilities.Remove(availability);
         }
 
 
