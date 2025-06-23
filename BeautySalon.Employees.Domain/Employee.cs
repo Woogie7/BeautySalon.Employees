@@ -104,6 +104,10 @@ namespace BeautySalon.Employees.Domain
 
         public void BookTime(DateTime startTime, DateTime endTime)
         {
+            if (_availabilities == null)
+            {
+                throw new InvalidOperationException("Availabilities collection is not initialized");
+            }
             var dayOfWeek = startTime.DayOfWeek;
             var start = startTime.TimeOfDay;
             var end = endTime.TimeOfDay;
