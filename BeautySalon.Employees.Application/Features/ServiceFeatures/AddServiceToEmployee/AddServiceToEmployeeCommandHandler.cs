@@ -1,5 +1,7 @@
+using AutoMapper;
 using BeautySalon.Booking.Infrastructure.Rabbitmq;
 using BeautySalon.Contracts.Employees;
+using BeautySalon.Employees.Application.DTO;
 using BeautySalon.Employees.Application.Exceptions;
 using BeautySalon.Employees.Domain;
 using BeautySalon.Employees.Persistence.Context;
@@ -8,20 +10,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BeautySalon.Employees.Application.Features.ServiceFeatures.AddServiceToEmployee;
 
-public class AddServiceToEmployeeCommandHandler : IRequestHandler<AddServiceToEmployeeCommand>
+public class AddServiceToEmployeeCommandHandler : IRequestHandler<AddServiceToEmployeeCommand, EmployeeDto>
 {
     private readonly IEmployeeRepository _employeeRepository;
     private readonly EmployeeDBContext _context;
     private readonly  IEventBus _eventBus;
+    private readonly IMapper _mapper;
 
-    public AddServiceToEmployeeCommandHandler(IEmployeeRepository employeeRepository, EmployeeDBContext context, IEventBus eventBus)
+    public AddServiceToEmployeeCommandHandler(IEmployeeRepository employeeRepository, EmployeeDBContext context, IEventBus eventBus, IMapper mapper)
     {
         _employeeRepository = employeeRepository;
         _context = context;
         _eventBus = eventBus;
+        _mapper = mapper;
     }
-    //
-    public async Task Handle(AddServiceToEmployeeCommand request, CancellationToken cancellationToken)
+    
+    public async Task<EmployeeDto> Handle(AddServiceToEmployeeCommand request, CancellationToken cancellationToken)
     {
         var employee = await _employeeRepository.GetByIdAsync(request.EmployeeId);
         if (employee is null)
@@ -50,5 +54,8 @@ public class AddServiceToEmployeeCommandHandler : IRequestHandler<AddServiceToEm
             IsActive = employee.IsActive,
             ServiceIds = employee.Skills.Select(s => s.ServiceId).ToList(),
         }, cancellationToken);
+        
+        
+        return _mapper.Map<EmployeeDto>(employee);
     }
 }
